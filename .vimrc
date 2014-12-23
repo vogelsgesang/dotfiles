@@ -43,6 +43,15 @@ endif
 filetype plugin indent on
 syntax on
 
+"disable arrow keys (to force me sticking to hjkl)
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
 
 set relativenumber "shows relative line numbers for easy motions
 set splitbelow "put horizontal splits below
