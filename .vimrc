@@ -99,6 +99,9 @@ set noshowmode
 "adjust the <leader> key
 let mapleader=","
 
+"disable ex mode
+nnoremap Q <Nop>
+
 "select a colorscheme
 colorscheme molokai
 
