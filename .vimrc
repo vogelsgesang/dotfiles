@@ -54,6 +54,8 @@ map <left> <nop>
 map <right> <nop>
 
 set relativenumber "shows relative line numbers for easy motions
+au CmdwinEnter :  set relativenumber!
+au CmdwinLeave :  set relativenumber
 set splitbelow "put horizontal splits below
 set splitright "put vertical splits to the right
 
