@@ -117,6 +117,7 @@ highlight Visual      cterm=UNDERLINE
 "dbext connection parameters
 let g:dbext_default_PGSQL_cmd_terminator = ";"
 let g:dbext_default_profile_pgsql_wahlen = "type=PGSQL:user=adrian:dbname=wahldaten"
+let g:dbext_default_autoclose = 1
 
 "emett configuration
 let g:user_emmet_install_global = 0
