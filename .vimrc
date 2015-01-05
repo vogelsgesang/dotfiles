@@ -28,6 +28,7 @@ Plugin 'wesQ3/vim-windowswap' "window swap
 Plugin 'tpope/vim-fugitive' "git integration
 Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 Plugin 'plasticboy/vim-markdown' "markdown support
+"Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
 "Plugin 'heavenshell/vim-jsdoc' "jsdoc support
 Plugin 'scrooloose/nerdtree' "file tree explorer
 call vundle#end()
@@ -75,6 +76,8 @@ set ignorecase
 set foldmethod=syntax
 set foldlevelstart=99
 
+"syntax highlighting
+let html_no_rendering=1
 let javaScript_fold=1         " JavaScript
 let perl_fold=1               " Perl
 let php_folding=1             " PHP
@@ -83,9 +86,8 @@ let ruby_fold=1               " Ruby
 let sh_fold_enabled=1         " sh
 let vimsyn_folding='af'       " Vim script
 let xml_syntax_folding=1      " XML
-
-"syntax highlighting
-let html_no_rendering=1
+"highlight ftl (Freemarker templates) as HTML
+autocmd BufNewFile,BufRead *.ftl setfiletype html
 
 "scrolling
 set scrolloff=2 "keep 2 lines visible over/below the cursor
