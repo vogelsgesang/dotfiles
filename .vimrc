@@ -15,7 +15,9 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'sjl/badwolf' "badwolf theme
 Plugin 'tomasr/molokai' "molokai theme
-Plugin 'Valloric/YouCompleteMe' "autocompletion
+if has('python')
+  Plugin 'Valloric/YouCompleteMe' "autocompletion
+endif
 Plugin 'dbext.vim' "auto completion etc. for SQL involving database
 Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
@@ -34,7 +36,7 @@ Plugin 'scrooloose/nerdtree' "file tree explorer
 call vundle#end()
 
 "powerline
-if !has('nvim') "neovim does not offer the python interface...
+if has('python')
   python from powerline.vim import setup as powerline_setup
   python powerline_setup()
   python del powerline_setup
