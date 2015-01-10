@@ -18,6 +18,7 @@ Plugin 'tomasr/molokai' "molokai theme
 if has('python')
   Plugin 'Valloric/YouCompleteMe' "autocompletion
 endif
+Plugin 'kien/ctrlp.vim' "fuzzy file search
 Plugin 'dbext.vim' "auto completion etc. for SQL involving database
 Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
@@ -30,7 +31,7 @@ Plugin 'wesQ3/vim-windowswap' "window swap
 Plugin 'tpope/vim-fugitive' "git integration
 Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 Plugin 'plasticboy/vim-markdown' "markdown support
-"Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
+Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
 "Plugin 'heavenshell/vim-jsdoc' "jsdoc support
 Plugin 'scrooloose/nerdtree' "file tree explorer
 call vundle#end()
@@ -38,6 +39,9 @@ call vundle#end()
 "enable filetype specific filetypes and indents
 filetype plugin indent on
 syntax on
+
+"always use unix encoding
+set fileformats=unix
 
 "disable arrow keys (to force me sticking to hjkl)
 imap <up> <nop>
@@ -100,8 +104,21 @@ set nowritebackup
 "adjust the <leader> key
 let mapleader=","
 
+"custom commands
+"normal mode: quote word in double quotes
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+"normal mode: quote word in single quotes
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+"visual mode: wrap in double quotes
+vnoremap <leader>" <esc>`<i"<esc>`>i"<esc>
+"visual mode: wrap in single quotes
+vnoremap <leader>' <esc>`<i"<esc>`>i"<esc>
+"ability to use jk to exit insert mode
+:inoremap jk <esc>
+
 "disable ex mode
 nnoremap Q <Nop>
+noremap x "_x
 
 "select a colorscheme
 colorscheme molokai
