@@ -109,10 +109,14 @@ vnoremap <leader>" <esc>`<i"<esc>`>i"<esc>
 "visual mode: wrap in single quotes
 vnoremap <leader>' <esc>`<i"<esc>`>i"<esc>
 "ability to use jk to exit insert mode
-:inoremap jk <esc>
+inoremap jk <esc>
+"disable the ESC key so that I actually learn the new mapping
+inoremap <esc> <Nop>
+
 
 "disable ex mode
 nnoremap Q <Nop>
+"do not overwrite the default buffer when using x
 noremap x "_x
 
 "select a colorscheme
