@@ -1,13 +1,5 @@
 set nocompatible
 
-" Source the vimrc file after saving it. This way, you don't have to reload Vim to see the changes.
-if has("autocmd")
- augroup myvimrchooks
-  au!
-  autocmd bufwritepost .vimrc source ~/.vimrc
- augroup END
-endif
-
 "Vundle plugins
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -105,6 +97,9 @@ set nowritebackup
 let mapleader=","
 
 "custom commands
+"create mappings to edit the vimrc easily
+nnoremap <leader>ev :split $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 "normal mode: quote word in double quotes
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 "normal mode: quote word in single quotes
