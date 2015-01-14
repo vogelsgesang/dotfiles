@@ -1,13 +1,5 @@
 set nocompatible
 
-" Source the vimrc file after saving it. This way, you don't have to reload Vim to see the changes.
-if has("autocmd")
- augroup myvimrchooks
-  au!
-  autocmd bufwritepost .vimrc source ~/.vimrc
- augroup END
-endif
-
 "Vundle plugins
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -18,6 +10,7 @@ Plugin 'tomasr/molokai' "molokai theme
 if has('python')
   Plugin 'Valloric/YouCompleteMe' "autocompletion
 endif
+Plugin 'kien/ctrlp.vim' "fuzzy file search
 Plugin 'dbext.vim' "auto completion etc. for SQL involving database
 Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
@@ -30,21 +23,17 @@ Plugin 'wesQ3/vim-windowswap' "window swap
 Plugin 'tpope/vim-fugitive' "git integration
 Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 Plugin 'plasticboy/vim-markdown' "markdown support
-"Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
+Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
 "Plugin 'heavenshell/vim-jsdoc' "jsdoc support
 Plugin 'scrooloose/nerdtree' "file tree explorer
 call vundle#end()
 
-"powerline
-if has('python')
-  python from powerline.vim import setup as powerline_setup
-  python powerline_setup()
-  python del powerline_setup
-endif
-
 "enable filetype specific filetypes and indents
 filetype plugin indent on
 syntax on
+
+"always use unix encoding
+set fileformats=unix
 
 "disable arrow keys (to force me sticking to hjkl)
 imap <up> <nop>
@@ -91,22 +80,41 @@ let xml_syntax_folding=1      " XML
 "highlight ftl (Freemarker templates) as HTML
 autocmd BufNewFile,BufRead *.ftl setfiletype html
 
+"autocompletion
+autocmd FileType html iabbrev </ </<C-X><C-O><C-F>
+autocmd FileType js iabbrev fun function
+autocmd FileType js iabbrev ret return
+autocmd FileType js iabbrev ; ;<CR>
+
 "scrolling
 set scrolloff=2 "keep 2 lines visible over/below the cursor
 set sidescrolloff=2
 
-"do not write a backup file (does not play nicely with file watches)
+"do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
 set nowritebackup
-
-"always show the status bar
-set laststatus=2
-set noshowmode
 
 "adjust the <leader> key
 let mapleader=","
 
+"custom commands
+"create mappings to edit the vimrc easily
+nnoremap <leader>ev :split $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+"normal mode: quote word in double quotes
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+"normal mode: quote word in single quotes
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+"visual mode: wrap in double quotes
+vnoremap <leader>" <esc>`<i"<esc>`>i"<esc>
+"visual mode: wrap in single quotes
+vnoremap <leader>' <esc>`<i"<esc>`>i"<esc>
+"ability to use jk to exit insert mode
+inoremap jk <esc>
+
 "disable ex mode
 nnoremap Q <Nop>
+"do not overwrite the default buffer when using x
+noremap x "_x
 
 "select a colorscheme
 colorscheme molokai
