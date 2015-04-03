@@ -18,6 +18,7 @@ Plugin 'wookiehangover/jshint.vim' "js hinting
 Plugin 'marijnh/tern_for_vim' "really good JS autocompletion
 Plugin 'groenewege/vim-less' "syntax highlighting for less
 Plugin 'digitaltoad/vim-jade' "syntax highlighting for jade
+Plugin 'alunny/pegjs-vim' "syntax highlighting for pegjs grammars
 Plugin 'mattn/emmet-vim' "shortcuts for HTML editing
 Plugin 'wesQ3/vim-windowswap' "window swap
 Plugin 'tpope/vim-fugitive' "git integration
