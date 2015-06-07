@@ -16,6 +16,7 @@ Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
 Plugin 'wookiehangover/jshint.vim' "js hinting
 Plugin 'marijnh/tern_for_vim' "really good JS autocompletion
+Plugin 'Superbil/llvm.vim' "syntax highlighting for LLVM code
 Plugin 'groenewege/vim-less' "syntax highlighting for less
 Plugin 'digitaltoad/vim-jade' "syntax highlighting for jade
 Plugin 'alunny/pegjs-vim' "syntax highlighting for pegjs grammars
