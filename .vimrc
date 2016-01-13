@@ -54,6 +54,8 @@ au CmdwinLeave :  set relativenumber
 set splitbelow "put horizontal splits below
 set splitright "put vertical splits to the right
 
+let g:ycm_global_ycm_extra_conf = '~/dotfiles/.ycm_extra_conf.py'
+
 "tabs
 set softtabstop=2 "number of spaces used with tab/bs
 set tabstop=2 "display tabs with the width of two spaces
@@ -84,6 +86,9 @@ let xml_syntax_folding=1      " XML
 autocmd BufNewFile,BufRead *.ftl setfiletype html
 
 "autocompletion
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_confirm_extra_conf = 0
 autocmd FileType html iabbrev </ </<C-X><C-O><C-F>
 autocmd FileType js iabbrev fun function
 autocmd FileType js iabbrev ret return
