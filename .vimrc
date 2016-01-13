@@ -10,24 +10,26 @@ Plugin 'tomasr/molokai' "molokai theme
 if has('python')
   Plugin 'Valloric/YouCompleteMe' "autocompletion
 endif
+"Plugin 'scrooloose/syntastic' "syntax checking
 Plugin 'kien/ctrlp.vim' "fuzzy file search
 Plugin 'dbext.vim' "auto completion etc. for SQL involving database
 Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
-Plugin 'wookiehangover/jshint.vim' "js hinting
-Plugin 'marijnh/tern_for_vim' "really good JS autocompletion
+"Plugin 'marijnh/tern_for_vim' "really good JS autocompletion
+Plugin 'wesQ3/vim-windowswap' "window swap
+Plugin 'tpope/vim-fugitive' "git integration
+Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
+Plugin 'scrooloose/nerdtree' "file tree explorer
+"syntax highlighting
 Plugin 'Superbil/llvm.vim' "syntax highlighting for LLVM code
 Plugin 'groenewege/vim-less' "syntax highlighting for less
 Plugin 'digitaltoad/vim-jade' "syntax highlighting for jade
 Plugin 'alunny/pegjs-vim' "syntax highlighting for pegjs grammars
 Plugin 'mattn/emmet-vim' "shortcuts for HTML editing
-Plugin 'wesQ3/vim-windowswap' "window swap
-Plugin 'tpope/vim-fugitive' "git integration
-Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 Plugin 'plasticboy/vim-markdown' "markdown support
 Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
-"Plugin 'heavenshell/vim-jsdoc' "jsdoc support
-Plugin 'scrooloose/nerdtree' "file tree explorer
+Plugin 'mxw/vim-jsx' "jsx syntax support
+Bundle "lepture/vim-jinja"
 call vundle#end()
 
 "enable filetype specific filetypes and indents
