@@ -29,7 +29,7 @@ Plugin 'mattn/emmet-vim' "shortcuts for HTML editing
 Plugin 'plasticboy/vim-markdown' "markdown support
 Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
 Plugin 'mxw/vim-jsx' "jsx syntax support
-Bundle "lepture/vim-jinja"
+Plugin 'lepture/vim-jinja' "jinja syntax support
 call vundle#end()
 
 "enable filetype specific filetypes and indents
@@ -39,24 +39,22 @@ syntax on
 "always use unix encoding
 set fileformats=unix
 
-"disable arrow keys (to force me sticking to hjkl)
-imap <up> <nop>
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-
-set relativenumber "shows relative line numbers for easy motions
 set number "shows absolute line number for current line
-au CmdwinEnter :  set relativenumber!
-au CmdwinLeave :  set relativenumber
 set splitbelow "put horizontal splits below
 set splitright "put vertical splits to the right
 
 let g:ycm_global_ycm_extra_conf = '~/dotfiles/.ycm_extra_conf.py'
+
+"settings for synstastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
 
 "tabs
 set softtabstop=2 "number of spaces used with tab/bs
