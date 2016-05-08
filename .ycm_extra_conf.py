@@ -39,7 +39,6 @@ flags = [
 '-Wextra',
 '-Werror',
 '-Wno-long-long',
-'-Wno-variadic-macros',
 '-fexceptions',
 '-DNDEBUG',
 # THIS IS IMPORTANT! Without a "-std=<something>" flag, clang won't know which
