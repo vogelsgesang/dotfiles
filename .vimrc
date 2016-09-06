@@ -11,7 +11,7 @@ if has('python')
   Plugin 'Valloric/YouCompleteMe' "autocompletion
 endif
 "Plugin 'scrooloose/syntastic' "syntax checking
-Plugin 'kien/ctrlp.vim' "fuzzy file search
+Plugin 'ctrlpvim/ctrlp.vim' "fuzzy file search
 Plugin 'dbext.vim' "auto completion etc. for SQL involving database
 Plugin 'vim-scripts/SQLComplete.vim' "auto completion based on dbext.vim
 Plugin 'pangloss/vim-javascript' "improved JS syntax and identation support
@@ -20,6 +20,7 @@ Plugin 'wesQ3/vim-windowswap' "window swap
 Plugin 'tpope/vim-fugitive' "git integration
 Plugin 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 Plugin 'scrooloose/nerdtree' "file tree explorer
+Plugin 'TagBar'
 "syntax highlighting
 Plugin 'Superbil/llvm.vim' "syntax highlighting for LLVM code
 Plugin 'groenewege/vim-less' "syntax highlighting for less
@@ -30,7 +31,57 @@ Plugin 'plasticboy/vim-markdown' "markdown support
 Plugin 'chaquotay/ftl-vim-syntax' "freemarker support
 Plugin 'mxw/vim-jsx' "jsx syntax support
 Plugin 'lepture/vim-jinja' "jinja syntax support
+Plugin 'derekwyatt/vim-scala'
+Plugin 'majutsushi/tagbar'
 call vundle#end()
+
+set tags=./tags;/
+nmap <F8> :TagbarToggle<CR>
+"cscope
+if has('cscope')
+  set cscopetag cscopeverbose
+
+  if has('quickfix')
+    set cscopequickfix=s-,c-,d-,i-,t-,e-
+  endif
+
+  cnoreabbrev csa cs add
+  cnoreabbrev csf cs find
+  cnoreabbrev csk cs kill
+  cnoreabbrev csr cs reset
+  cnoreabbrev css cs show
+  cnoreabbrev csh cs help
+
+  command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
+
+  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+  nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+  nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+
 
 "enable filetype specific filetypes and indents
 filetype plugin indent on
@@ -39,6 +90,8 @@ syntax on
 "always use unix encoding
 set fileformats=unix
 
+let g:ctrlp_root_markers = ['Makefile']
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|ade_path)$'
 set number "shows absolute line number for current line
 set splitbelow "put horizontal splits below
 set splitright "put vertical splits to the right
@@ -100,6 +153,14 @@ set sidescrolloff=2
 
 "do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
 set nowritebackup
+
+"command line autocompletion
+set wildmenu
+set wildmode=longest,list
+set wildignore+=*.a,*.o
+set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
+set wildignore+=.DS_Store,.git,.hg,.svn
+set wildignore+=*~,*.swp,*.tmp
 
 "adjust the <leader> key
 let mapleader=","
