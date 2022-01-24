@@ -2,6 +2,9 @@
 "General editing-related config
 """""""""""""""""""""""""
 
+"Use full color space
+set termguicolors
+
 "enable filetype specific filetypes and indents
 filetype plugin indent on
 syntax on
@@ -27,8 +30,9 @@ set expandtab "expand tabs into spaces
 set smarttab
 set autoindent
 
-"search
+" search case insensitive if term is all lowercase
 set ignorecase
+set smartcase
 
 "scrolling
 set cursorline
@@ -74,18 +78,17 @@ vnoremap <leader>" <esc>`<i"<esc>`>i"<esc>
 vnoremap <leader>' <esc>`<i'<esc>`>i'<esc>
 "visual mode: wrap in single quotes
 vnoremap <leader>` <esc>`<i`<esc>`>i`<esc>
-"ability to use jk to exit insert mode
+"use jk to exit insert mode
 inoremap jk <esc>
 "create mappings to edit the vimrc easily
 nnoremap <leader>ev :split $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-"textobj-argument
-"oscyank
-
 """""""""""""""""""""""""
 "Plugins
 """""""""""""""""""""""""
+
+"TODO: textobj-argument
 
 call plug#begin()
 " Themes
@@ -95,7 +98,8 @@ Plug 'tomasr/molokai' "molokai theme
 Plug 'ojroques/vim-oscyank' "copy-paste over ssh
 Plug 'nvim-lua/plenary.nvim' "Dependency of other plugins
 Plug 'nvim-telescope/telescope.nvim' "fuzzy matcher
-Plug 'nvim-telescope/telescope-ui-select.nvim'
+Plug 'nvim-telescope/telescope-ui-select.nvim' "integration of LSP into Telescope
+Plug 'rcarriga/nvim-notify' "LSP notifications
 Plug 'scrooloose/nerdtree' "file tree explorer
 Plug 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 "Language server support
@@ -128,6 +132,11 @@ let g:ftplugin_sql_omni_key       = '<C-.>'
 
 "Nerdree
 nmap <leader>t :NERDTreeToggle<CR>
+
+" TODO: fix icons
+lua << EOF
+vim.notify = require("notify")
+EOF
 
 """"""""""""""""""""""""""""
 " Telescope
@@ -234,10 +243,29 @@ end
 nvim_lsp["clangd"].setup {
   capabilities = require('cmp_nvim_lsp').update_capabilities(nvim_lsp["clangd"].document_config.default_config.capabilities),
   -- to debug: '-log:verbose'
-  cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--hidden-features'},
+  -- --hidden-features
+  cmd = { 'clangd', '--enable-config', '--use-dirty-headers'},
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 1000,
   }
 }
+
+-- TODO: Fix multi-line support
+vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
+  local client = vim.lsp.get_client_by_id(ctx.client_id)
+  local lvl = ({
+    'ERROR',
+    'WARN',
+    'INFO',
+    'DEBUG',
+  })[result.type]
+  vim.notify({ result.message }, lvl, {
+    title = 'LSP | ' .. client.name,
+    timeout = 10000,
+    keep = function()
+      return lvl == 'ERROR' or lvl == 'WARN'
+    end,
+  })
+end
 EOF
