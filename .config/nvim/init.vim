@@ -209,7 +209,7 @@ cmp.setup({
 local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
 set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>')
+set_keymap('n', '<space>q', "<cmd>lua require('telescope.builtin').diagnostics()<cr>")
 
 -----------------------
 -- Setup lspconfig.
