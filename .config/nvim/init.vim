@@ -143,14 +143,13 @@ EOF
 " TODO: use for LSP diagnostircs
 lua <<EOF
 local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
-set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 set_keymap('n', '<leader>f<CR>', "<cmd>lua require('telescope.builtin').resume()<cr>")
 set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').builtin()<cr>")
 set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
 set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
 set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
 set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
-set_keymap('n', '<leader>fr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>")
+set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>")
 
 local telescope = require("telescope");
 telescope.setup {
@@ -228,8 +227,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
   buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+  buf_set_keymap('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>")
+  bug_set_keymap('n', 'gi', "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>")
   buf_set_keymap('n', 'g<Tab>', '<cmd>ClangdSwitchSourceHeader<CR>')
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
