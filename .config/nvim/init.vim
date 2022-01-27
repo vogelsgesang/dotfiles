@@ -98,6 +98,7 @@ Plug 'tomasr/molokai' "molokai theme
 " General editing/navigation
 Plug 'ojroques/vim-oscyank' "copy-paste over ssh
 Plug 'nvim-lua/plenary.nvim' "Dependency of other plugins
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim' "fuzzy matcher
 Plug 'nvim-telescope/telescope-ui-select.nvim' "integration of LSP into Telescope
 Plug 'rcarriga/nvim-notify' "LSP notifications
@@ -175,6 +176,7 @@ telescope.setup {
   }
 }
 telescope.load_extension("ui-select")
+telescope.load_extension("fzf")
 EOF
 
 
