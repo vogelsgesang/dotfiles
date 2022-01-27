@@ -89,6 +89,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 """""""""""""""""""""""""
 
 "TODO: textobj-argument
+"TODO: https://github.com/skywind3000/asynctasks.vim
 
 call plug#begin()
 " Themes
@@ -143,6 +144,9 @@ EOF
 " TODO: use for LSP diagnostircs
 lua <<EOF
 local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
+
+-- The `<leader>f` prefix is for toplevel entry points, independent of the current buffer
+-- "f" stands for "find"
 set_keymap('n', '<leader>f<CR>', "<cmd>lua require('telescope.builtin').resume()<cr>")
 set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').builtin()<cr>")
 set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
@@ -150,6 +154,10 @@ set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()
 set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
 set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
 set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>")
+
+-- Git history. `h` as in "history"
+set_keymap('n', '<leader>h', "<cmd>lua require('telescope.builtin').git_bcommits()<cr>")
+
 
 local telescope = require("telescope");
 telescope.setup {
@@ -162,9 +170,7 @@ telescope.setup {
   },
   extensions = {
     ["ui-select"] = {
-      require("telescope.themes").get_cursor({
-        -- even more opts
-      })
+      require("telescope.themes").get_cursor({})
     }
   }
 }
@@ -225,10 +231,9 @@ local on_attach = function(client, bufnr)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
   buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
   buf_set_keymap('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>")
-  buf_set_keymap('n', 'gi', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>")
+  buf_set_keymap('n', 'gd', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>")
   buf_set_keymap('n', 'g<Tab>', '<cmd>ClangdSwitchSourceHeader<CR>')
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
