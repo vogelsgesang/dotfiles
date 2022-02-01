@@ -137,7 +137,12 @@ nmap <leader>t :NERDTreeToggle<CR>
 
 " TODO: fix icons
 lua << EOF
-vim.notify = require("notify")
+local notify = require("notify")
+notify.setup({
+    max_width = 80,
+    max_height = 20
+})
+vim.notify = notify
 EOF
 
 """"""""""""""""""""""""""""
