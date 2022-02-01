@@ -157,7 +157,7 @@ set_keymap('n', '<leader>f<CR>', "<cmd>lua require('telescope.builtin').resume()
 set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').builtin()<cr>")
 set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
 set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
-set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
+set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers({ sort_mru = true, ignore_current_buffer = true })<cr>")
 set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
 set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>")
 
