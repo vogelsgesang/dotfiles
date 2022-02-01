@@ -159,7 +159,7 @@ set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files(
 set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
 set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>")
 set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
-set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>")
+set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>")
 
 -- Git history. `h` as in "history"
 set_keymap('n', '<leader>h', "<cmd>lua require('telescope.builtin').git_bcommits()<cr>")
@@ -255,7 +255,7 @@ nvim_lsp["clangd"].setup {
   capabilities = require('cmp_nvim_lsp').update_capabilities(nvim_lsp["clangd"].document_config.default_config.capabilities),
   -- to debug: '-log:verbose'
   -- --hidden-features
-  cmd = { 'clangd', '--enable-config', '--use-dirty-headers'},
+  cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=1000', '--hidden-features'},
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 1000,
