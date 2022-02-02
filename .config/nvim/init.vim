@@ -129,27 +129,16 @@ silent! colorscheme molokai
 "OSCYank config
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankReg +' | endif
 
-"work around weird SQL autocompletion
-let g:ftplugin_sql_omni_key       = '<C-.>'
-
 "Nerdree
 nmap <leader>t :NERDTreeToggle<CR>
 
-" TODO: fix icons
-lua << EOF
-local notify = require("notify")
-notify.setup({
-    max_width = 80,
-    max_height = 20
-})
-vim.notify = notify
-EOF
 
-""""""""""""""""""""""""""""
-" Telescope
-" TODO: use for LSP diagnostircs
-lua <<EOF
+lua << EOF
 local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
+
+--------------------------------------------
+-- Telescope
+--------------------------------------------
 
 -- The `<leader>f` prefix is for toplevel entry points, independent of the current buffer
 -- "f" stands for "find"
@@ -182,12 +171,25 @@ telescope.setup {
 }
 telescope.load_extension("ui-select")
 telescope.load_extension("fzf")
-EOF
 
 
-""""""""""""""""""""""""""""
-"LSP support
-lua <<EOF
+--------------------------------------------
+-- Notifications
+--------------------------------------------
+local notify = require("notify")
+notify.setup({
+    max_width = 80,
+    max_height = 20
+    -- TODO: fix icons
+})
+vim.notify = notify
+set_keymap('n', '<leader>n', "<cmd>lua require('telescope').extensions.notify.notify()<cr>")
+
+
+--------------------------------------------
+-- LSP support
+--------------------------------------------
+
 local cmp = require'cmp'
 local nvim_lsp = require('lspconfig')
 
@@ -219,7 +221,6 @@ cmp.setup({
 -----------------------
 -- Shortcuts for diagnostics
 
-local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
 set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 set_keymap('n', '<space>q', "<cmd>lua require('telescope.builtin').diagnostics()<cr>")
@@ -262,7 +263,6 @@ nvim_lsp["clangd"].setup {
   }
 }
 
-set_keymap('n', '<leader>n', "<cmd>lua require('telescope').extensions.notify.notify()<cr>")
 vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   local client = vim.lsp.get_client_by_id(ctx.client_id)
   local lvl = ({
