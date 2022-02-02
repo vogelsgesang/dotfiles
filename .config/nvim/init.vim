@@ -112,6 +112,7 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 "Plug 'simrat39/symbols-outline.nvim' " symbol tree; couple of rendering issues; maybe revisit later
 " Plug 'stevearc/dressing.nvim' "nicer UI for code actions; unfortunately typrhas rendering errors
+Plug 'mfussenegger/nvim-dap' " Debug adapter
 "" Other languages/syntax highlighting
 "Plug 'Superbil/llvm.vim' "syntax highlighting for LLVM code; destroys shiftwidth
 Plug 'bfrg/vim-cpp-modern' "syntax highlighting for C++ code
@@ -279,4 +280,54 @@ vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
     end,
   })
 end
+
+
+--------------------------------------------
+-- Debug adapter
+--------------------------------------------
+
+-- Keymap for debugging
+set_keymap('n', '<leader>dc', "<cmd>lua require('dap').continue()<cr>")
+set_keymap('n', '<leader>dr', "<cmd>lua require('dap').run_last()<cr>")
+set_keymap('n', '<leader>dn', "<cmd>lua require('dap').step_over()<cr>")
+set_keymap('n', '<leader>ds', "<cmd>lua require('dap').step_into()<cr>")
+set_keymap('n', '<leader>df', "<cmd>lua require('dap').step_out()<cr>") -- "f" as in "finish"
+set_keymap('n', '<leader>db', "<cmd>lua require('dap').toggle_breakpoint()<cr>")
+set_keymap('n', '<leader>dB', "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>")
+set_keymap('n', '<leader>dt', "<cmd>lua require('dap').repl.toggle()<cr>") -- "t" as in "terminal"
+
+
+local dap = require('dap')
+
+dap.adapters.python = {
+  type = 'executable';
+  command = 'python3';
+  args = { '-m', 'debugpy.adapter' };
+}
+
+dap.configurations.python = {
+  {
+    -- The first three options are required by nvim-dap
+    type = 'python'; -- the type here established the link to the adapter definition: `dap.adapters.python`
+    request = 'launch';
+    name = "Launch file";
+
+    -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+
+    program = "${file}"; -- This configuration will launch the current file if used.
+    pythonPath = function()
+      -- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
+      -- The code below looks for a `venv` or `.venv` folder in the current directly and uses the python within.
+      -- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
+      local cwd = vim.fn.getcwd()
+      if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
+        return cwd .. '/venv/bin/python'
+      elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
+        return cwd .. '/.venv/bin/python'
+      else
+        return '/usr/bin/python3'
+      end
+    end;
+  },
+}
 EOF
