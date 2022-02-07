@@ -180,8 +180,14 @@ telescope.load_extension("fzf")
 local notify = require("notify")
 notify.setup({
     max_width = 80,
-    max_height = 20
-    -- TODO: fix icons
+    max_height = 20,
+    icons = {
+        ERROR = "",
+        WARN = "",
+        INFO = "",
+        DEBUG = "",
+        TRACE = "✎",
+    }
 })
 vim.notify = notify
 set_keymap('n', '<leader>n', "<cmd>lua require('telescope').extensions.notify.notify()<cr>")
@@ -285,6 +291,7 @@ end
 --------------------------------------------
 -- Debug adapter
 --------------------------------------------
+local dap = require('dap')
 
 -- Keymap for debugging
 set_keymap('n', '<leader>dc', "<cmd>lua require('dap').continue()<cr>")
@@ -294,10 +301,15 @@ set_keymap('n', '<leader>ds', "<cmd>lua require('dap').step_into()<cr>")
 set_keymap('n', '<leader>df', "<cmd>lua require('dap').step_out()<cr>") -- "f" as in "finish"
 set_keymap('n', '<leader>db', "<cmd>lua require('dap').toggle_breakpoint()<cr>")
 set_keymap('n', '<leader>dB', "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>")
+set_keymap('n', '<leader>dl', "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>")
 set_keymap('n', '<leader>dt', "<cmd>lua require('dap').repl.toggle()<cr>") -- "t" as in "terminal"
 
-
-local dap = require('dap')
+-- Symbols
+vim.fn.sign_define('DapStop', {text='🤡', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakPointCondition', {text='🟥', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapLogPoint', {text='🟣', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakPointRejected', {text='🟡', texthl='', linehl='', numhl=''})
 
 dap.adapters.python = {
   type = 'executable';
