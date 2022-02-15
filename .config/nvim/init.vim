@@ -111,7 +111,7 @@ Plug 'hrsh7th/nvim-cmp' "Autocompletion plugin
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 "Plug 'simrat39/symbols-outline.nvim' " symbol tree; couple of rendering issues; maybe revisit later
-" Plug 'stevearc/dressing.nvim' "nicer UI for code actions; unfortunately typrhas rendering errors
+Plug 'stevearc/dressing.nvim' "nicer UI for code actions; unfortunately typrhas rendering errors
 Plug 'mfussenegger/nvim-dap' " Debug adapter
 "" Other languages/syntax highlighting
 "Plug 'Superbil/llvm.vim' "syntax highlighting for LLVM code; destroys shiftwidth
