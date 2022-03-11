@@ -376,6 +376,7 @@ vim.lsp.handlers["$/progress"] = function(_, result, ctx)
 end
 
 
+
 --------------------------------------------
 -- Debug adapter
 --------------------------------------------
@@ -399,6 +400,7 @@ vim.fn.sign_define('DapBreakPointCondition', {text='🟥', texthl='', linehl='',
 vim.fn.sign_define('DapLogPoint', {text='🟣', texthl='', linehl='', numhl=''})
 vim.fn.sign_define('DapBreakPointRejected', {text='🟡', texthl='', linehl='', numhl=''})
 
+-- Python debugging
 dap.adapters.python = {
   type = 'executable';
   command = 'python3';
@@ -430,4 +432,21 @@ dap.configurations.python = {
     end;
   },
 }
+
+-- C++ debugging
+dap.adapters.lldb = {
+  type = 'executable',
+  command = 'lldb-vscode',
+  name = "lldb"
+}
+
+dap.configurations.cpp = {
+    {
+      name = "Attach to gdb-server",
+      type = 'lldb',
+      request = 'attach',
+      attachCommands = {"gdb-remote localhost:9999"},
+    },
+}
+
 EOF
