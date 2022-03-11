@@ -156,12 +156,22 @@ set_keymap('n', '<leader>h', "<cmd>lua require('telescope.builtin').git_bcommits
 
 
 local telescope = require("telescope");
-telescope.setup {
-  mappings = {
-    i = {
-       -- TODO: configure history and https://github.com/nvim-telescope/telescope-smart-history.nvim
-      ["C-p"] = require('telescope.actions').cycle_history_next,
-      ["C-n"] = require('telescope.actions').cycle_history_prev,
+telescope.setup ({
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-p>"] = require('telescope.actions').cycle_history_prev,
+        ["<C-n>"] = require('telescope.actions').cycle_history_next,
+      },
+    },
+  },
+  pickers = {
+    buffers = {
+      mappings = {
+        n = {
+          ['d'] = require('telescope.actions').delete_buffer
+        },
+      },
     },
   },
   extensions = {
@@ -169,7 +179,7 @@ telescope.setup {
       require("telescope.themes").get_cursor({})
     }
   }
-}
+})
 telescope.load_extension("ui-select")
 telescope.load_extension("fzf")
 
