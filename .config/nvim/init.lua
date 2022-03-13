@@ -1,141 +1,134 @@
-"""""""""""""""""""""""""
-"General editing-related config
-"""""""""""""""""""""""""
+--------------------------
+--General editing-related config
+--------------------------
 
-"Use full color space
-set termguicolors
+--adjust the <leader> key
+vim.g.mapleader = ","
 
-"enable filetype specific filetypes and indents
-filetype plugin indent on
-syntax on
+--use full color space
+vim.opt.termguicolors = true
 
-"adjust the <leader> key
-let mapleader=","
+--always use unix encoding
+vim.opt.fileformats = "unix"
 
-"always use unix encoding
-set fileformats=unix
+--line numbers
+vim.opt.number = true
 
-"line numbers
-set number "shows absolute line number for current line
+--splitting
+vim.opt.splitbelow = true --put horizontal splits below
+vim.opt.splitright = true --put vertical splits to the right
 
-"splitting
-set splitbelow "put horizontal splits below
-set splitright "put vertical splits to the right
+--tabs
+vim.opt.softtabstop = 3 --number of spaces used with tab/bs
+vim.opt.tabstop = 3 --display tabs with the width of 3 spaces
+vim.opt.shiftwidth = 3 --indent with 3 spaces
+vim.opt.expandtab = true --expand tabs into spaces
+vim.opt.smarttab = true
+vim.opt.autoindent = true
 
-"tabs
-set softtabstop=3 "number of spaces used with tab/bs
-set tabstop=3 "display tabs with the width of 3 spaces
-set shiftwidth=3 "indent with 3 spaces
-set expandtab "expand tabs into spaces
-set smarttab
-set autoindent
+-- search case insensitive if term is all lowercase
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-" search case insensitive if term is all lowercase
-set ignorecase
-set smartcase
+--scrolling
+vim.opt.cursorline = true
+vim.opt.scrolloff = 2 --keep 2 lines visible over/below the cursor
+vim.opt.sidescrolloff = 2
 
-"scrolling
-set cursorline
-set scrolloff=2 "keep 2 lines visible over/below the cursor
-set sidescrolloff=2
+--do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
+vim.opt.writebackup = false
 
-"do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
-set nowritebackup
+--------------------------
+--command line autocompletion
+--------------------------
+vim.opt.wildmenu = true
+vim.opt.wildmode = longest,list
+vim.opt.wildignore = "*.a,*.o"
+vim.opt.wildignore:append("*.bmp,*.gif,*.ico,*.jpg,*.png")
+vim.opt.wildignore:append(".DS_Store,.git,.hg,.svn")
+vim.opt.wildignore:append("*~,*.swp,*.tmp")
 
-"""""""""""""""""""""""""
-"command line autocompletion
-"""""""""""""""""""""""""
-set wildmenu
-set wildmode=longest,list
-set wildignore+=*.a,*.o
-set wildignore+=*.bmp,*.gif,*.ico,*.jpg,*.png
-set wildignore+=.DS_Store,.git,.hg,.svn
-set wildignore+=*~,*.swp,*.tmp
-
-"""""""""""""""""""""""""
-" Overwrite built-in shotcuts
-"""""""""""""""""""""""""
-"disable ex mode
-nnoremap Q <Nop>
-"do not overwrite the default buffer when using x
-noremap x "_x
+--------------------------
+-- Overwrite built-in shotcuts
+--------------------------
+local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
+--disable ex mode
+set_keymap("n", "Q", "")
+--do not overwrite the default buffer when using x
+set_keymap("n", "x", '"_x')
 
 
-"""""""""""""""""""""""""
-" General, useful shortcuts
-"""""""""""""""""""""""""
-"normal mode: comment out word
-nnoremap <leader>* viw<esc>a*/<esc>hbi/*<esc>lel
-"normal mode: quote word in double quotes
-nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-"normal mode: quote word in single quotes
-nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-"normal mode: quote word in single quotes
-nnoremap <leader>` viw<esc>a`<esc>hbi`<esc>lel
-"visual mode: wrap in double quotes
-vnoremap <leader>" <esc>`<i"<esc>`>i"<esc>
-"visual mode: wrap in single quotes
-vnoremap <leader>' <esc>`<i'<esc>`>i'<esc>
-"visual mode: wrap in single quotes
-vnoremap <leader>` <esc>`<i`<esc>`>i`<esc>
-"use jk to exit insert mode
-inoremap jk <esc>
-"create mappings to edit the vimrc easily
-nnoremap <leader>ev :split $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+--------------------------
+-- General, useful shortcuts
+--------------------------
+--normal mode: comment out word
+set_keymap("n", "<leader>*", "viw<esc>a*/<esc>hbi/*<esc>lel")
+--normal mode: quote word in double quotes
+set_keymap("n", '<leader>"', 'viw<esc>a"<esc>hbi"<esc>lel')
+--normal mode: quote word in single quotes
+set_keymap("n", "<leader>'", "viw<esc>a'<esc>hbi'<esc>lel")
+--normal mode: quote word in single quotes
+set_keymap("n", "<leader>`", "viw<esc>a`<esc>hbi`<esc>lel")
+--visual mode: wrap in double quotes
+set_keymap("v", '<leader>"', '<esc>`<i"<esc>`>i"<esc>')
+--visual mode: wrap in single quotes
+set_keymap("v", "<leader>'", "<esc>`<i'<esc>`>i'<esc>")
+--visual mode: wrap in single quotes
+set_keymap("v", "<leader>`", "<esc>`<i`<esc>`>i`<esc>")
+--use jk to exit insert mode
+set_keymap("i", "jk", "<esc>")
+--create mappings to edit the vimrc easily
+set_keymap("n", "<leader>ev", ":split $MYVIMRC<cr>")
+set_keymap("n", "<leader>sv", ":source $MYVIMRC<cr>")
 
-"""""""""""""""""""""""""
-"Plugins
-"""""""""""""""""""""""""
+--------------------------
+--Plugins
+--------------------------
 
-"TODO: textobj-argument
-"TODO: https://github.com/skywind3000/asynctasks.vim
+--TODO: textobj-argument
+--TODO: https://github.com/skywind3000/asynctasks.vim
+--TODO: simrat39/symbols-outline.nvim -- symbol tree; couple of rendering issues; maybe revisit later
 
-call plug#begin()
-" Themes
-Plug 'sjl/badwolf' "badwolf theme
-Plug 'tomasr/molokai' "molokai theme
-" General editing/navigation
-Plug 'ojroques/vim-oscyank' "copy-paste over ssh
-Plug 'nvim-lua/plenary.nvim' "Dependency of other plugins
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope.nvim' "fuzzy matcher
-Plug 'nvim-telescope/telescope-ui-select.nvim' "integration of LSP into Telescope
-Plug 'rcarriga/nvim-notify' "LSP notifications
-Plug 'scrooloose/nerdtree' "file tree explorer
-Plug 'godlygeek/tabular' "text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
-"Language server support
-Plug 'neovim/nvim-lspconfig' "LSP config
-Plug 'hrsh7th/cmp-nvim-lsp' "LSP source for nvim-cmp
-Plug 'hrsh7th/nvim-cmp' "Autocompletion plugin
+local Plug = vim.fn['plug#']
+
+vim.call('plug#begin')
+-- Themes
+Plug 'sjl/badwolf' -- badwolf theme
+Plug 'tomasr/molokai' -- molokai theme
+-- General editing/navigation
+Plug 'ojroques/vim-oscyank' -- copy-paste over ssh
+Plug 'nvim-lua/plenary.nvim' -- Dependency of other plugins
+Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
+Plug 'nvim-telescope/telescope.nvim' -- fuzzy matcher
+Plug 'nvim-telescope/telescope-ui-select.nvim' -- integration of LSP into Telescope
+Plug 'rcarriga/nvim-notify' -- LSP notifications
+Plug 'scrooloose/nerdtree' -- file tree explorer
+Plug 'godlygeek/tabular' -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
+-- Language server support
+Plug 'neovim/nvim-lspconfig' -- LSP config
+Plug 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+Plug 'hrsh7th/nvim-cmp' -- Autocompletion plugin
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
-"Plug 'simrat39/symbols-outline.nvim' " symbol tree; couple of rendering issues; maybe revisit later
-Plug 'stevearc/dressing.nvim' "nicer UI for code actions; unfortunately typrhas rendering errors
-Plug 'mfussenegger/nvim-dap' " Debug adapter
-"" Other languages/syntax highlighting
-"Plug 'Superbil/llvm.vim' "syntax highlighting for LLVM code; destroys shiftwidth
-Plug 'bfrg/vim-cpp-modern' "syntax highlighting for C++ code
-Plug 'rust-lang/rust.vim' "syntax highlighting for Rust code
-Plug 'plasticboy/vim-markdown' "markdown support
-Plug 'leafgarland/typescript-vim' "typescript syntax support
-"Plug 'lepture/vim-jinja' "jinja syntax support
-call plug#end()
+Plug 'stevearc/dressing.nvim' -- nicer UI for code actions; unfortunately typrhas rendering errors
+Plug 'mfussenegger/nvim-dap' --  Debug adapter
+-- Other languages/syntax highlighting
+Plug 'bfrg/vim-cpp-modern' -- syntax highlighting for C++ code
+Plug 'rust-lang/rust.vim' -- syntax highlighting for Rust code
+Plug 'plasticboy/vim-markdown' -- markdown support
+Plug 'leafgarland/typescript-vim' -- typescript syntax support
+vim.call('plug#end')
 
-silent! colorscheme molokai
+vim.cmd("silent! colorscheme molokai")
 
-" terminal config
-:tnoremap <Esc> <C-\><C-n>
+-- terminal config
+set_keymap("t", "<Esc>", "<C-\\><C-n>")
 
-"OSCYank config
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankReg +' | endif
+--OSCYank config
+vim.cmd("autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankReg +' | endif")
 
-"Nerdree
-nmap <leader>t :NERDTreeToggle<CR>
-
-
-lua << EOF
-local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
+--Nerdree
+set_keymap("n", "<leader>t", ":NERDTreeToggle<CR>")
 
 --------------------------------------------
 -- Telescope
@@ -273,7 +266,8 @@ nvim_lsp["clangd"].setup {
   capabilities = require('cmp_nvim_lsp').update_capabilities(nvim_lsp["clangd"].document_config.default_config.capabilities),
   -- to debug: '-log:verbose'
   -- --hidden-features
-  cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=1000', '--hidden-features'},
+  --cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000'},
+  cmd = { '/home/tsi/avogelsgesang/hyper-cache/devtoolset/clang/master_hyper.13.0.0.c2499864.rf28e1121/redhat7-x86_64-release/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000'},
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 1000,
@@ -436,17 +430,26 @@ dap.configurations.python = {
 -- C++ debugging
 dap.adapters.lldb = {
   type = 'executable',
-  command = 'lldb-vscode',
+  command = '/home/tsi/avogelsgesang/Documents/llvm-project/build/bin/lldb-vscode',
   name = "lldb"
 }
 
 dap.configurations.cpp = {
     {
+      name = "Spawn sql_hyper",
+      type = 'lldb',
+      request = 'launch',
+      program = '${workspaceFolder}/bazel-bin/hyper/tools/sql_hyper/sql_hyper',
+      args = {"!", "test.sql"},
+      runInTerminal = true,
+      stopOnEntry = true,
+      debuggerRoot = "${workspaceFolder}",
+    },
+    {
       name = "Attach to gdb-server",
       type = 'lldb',
       request = 'attach',
       attachCommands = {"gdb-remote localhost:9999"},
+      debuggerRoot = "${workspaceFolder}",
     },
 }
-
-EOF
