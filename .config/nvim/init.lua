@@ -293,32 +293,45 @@ end
 
 
 -- LSP progress notifications
--- from https://github.com/rcarriga/nvim-notify/issues/43#issuecomment-1030604806
+-- based on https://github.com/rcarriga/nvim-notify/issues/43#issuecomment-1030604806
 local client_notifs = {}
+
+local function get_notif_data(client_id, token)
+  if not client_notifs[client_id] then
+    client_notifs[client_id] = {}
+  end
+
+  if not client_notifs[client_id][token] then
+    client_notifs[client_id][token] = {}
+  end
+
+  return client_notifs[client_id][token]
+end
+
 
 local spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }
 
 local function update_spinner(client_id, token)
-  local notif_data = client_notifs[client_id][token]
-  if notif_data and notif_data.spinner then
+  local notif_data = get_notif_data(client_id, token)
+
+  if notif_data.spinner then
     local new_spinner = (notif_data.spinner + 1) % #spinner_frames
-    local new_notif = vim.notify(
-      nil,
-      nil,
-      { hidden = true, icon = spinner_frames[new_spinner], replace = notif_data.notification }
-    )
-    client_notifs[client_id][token] = {
-      notification = new_notif,
-      spinner = new_spinner,
-    }
+    notif_data.spinner = new_spinner
+
+    notif_data.notification = vim.notify(nil, nil, {
+      hide_from_history = true,
+      icon = spinner_frames[new_spinner],
+      replace = notif_data.notification,
+    })
+
     vim.defer_fn(function()
       update_spinner(client_id, token)
     end, 100)
   end
 end
 
-local function format_title(title, client)
-  return client.name .. (#title > 0 and ": " .. title or "")
+local function format_title(title, client_name)
+  return client_name .. (#title > 0 and ": " .. title or "")
 end
 
 local function format_message(message, percentage)
@@ -327,48 +340,43 @@ end
 
 vim.lsp.handlers["$/progress"] = function(_, result, ctx)
   local client_id = ctx.client_id
+
   local val = result.value
-  if val.kind then
-    if not client_notifs[client_id] then
-      client_notifs[client_id] = {}
-    end
-    local notif_data = client_notifs[client_id][result.token]
-    if val.kind == "begin" then
-      local message = format_message(val.message, val.percentage)
-      local notification = vim.notify(message, "info", {
-        title = format_title(val.title, vim.lsp.get_client_by_id(client_id)),
-        icon = spinner_frames[1],
-        timeout = false,
-        hidden = false,
+
+  if not val.kind then
+    return
+  end
+
+  local notif_data = get_notif_data(client_id, result.token)
+
+  if val.kind == "begin" then
+    local message = format_message(val.message, val.percentage)
+
+    notif_data.notification = vim.notify(message, "info", {
+      title = format_title(val.title, vim.lsp.get_client_by_id(client_id).name),
+      icon = spinner_frames[1],
+      timeout = false,
+      hide_from_history = false,
+    })
+
+    notif_data.spinner = 1
+    update_spinner(client_id, result.token)
+  elseif val.kind == "report" and notif_data then
+    notif_data.notification = vim.notify(format_message(val.message, val.percentage), "info", {
+      replace = notif_data.notification,
+      hide_from_history = false,
+    })
+  elseif val.kind == "end" and notif_data then
+    notif_data.notification =
+      vim.notify(val.message and format_message(val.message) or "Complete", "info", {
+        icon = "",
+        replace = notif_data.notification,
+        timeout = 3000,
       })
-      client_notifs[client_id][result.token] = {
-        notification = notification,
-        spinner = 1,
-      }
-      update_spinner(client_id, result.token)
-    elseif val.kind == "report" and notif_data then
-      local new_notif = vim.notify(
-        format_message(val.message, val.percentage),
-        "info",
-        { replace = notif_data.notification, hidden = false }
-      )
-      client_notifs[client_id][result.token] = {
-        notification = new_notif,
-        spinner = notif_data.spinner,
-      }
-    elseif val.kind == "end" and notif_data then
-      local new_notif = vim.notify(
-        val.message and format_message(val.message) or "Complete",
-        "info",
-        { icon = "", replace = notif_data.notification, timeout = 3000 }
-      )
-      client_notifs[client_id][result.token] = {
-        notification = new_notif,
-      }
-    end
+
+    notif_data.spinner = nil
   end
 end
-
 
 
 --------------------------------------------
@@ -453,3 +461,36 @@ dap.configurations.cpp = {
       debuggerRoot = "${workspaceFolder}",
     },
 }
+
+dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
+  local notif_data = get_notif_data("dap", body.progressId)
+
+  local message = format_message(body.message, body.percentage)
+  notif_data.notification = vim.notify(message, "info", {
+    title = format_title(body.title, session.config.type),
+    icon = spinner_frames[1],
+    timeout = false,
+    hide_form_history = false,
+  })
+
+  notif_data.notification.spinner = 1,
+  update_spinner("dap", body.progressId)
+end
+
+dap.listeners.before['event_progressUpdate']['progress-notifications'] = function(session, body)
+  local notif_data = get_notif_data("dap", body.progressId)
+  notif_data.notification = vim.notify(format_message(body.message, body.percentage), "info", {
+    replace = notif_data.notification,
+    hide_form_history = false,
+  })
+end
+
+dap.listeners.before['event_progressEnd']['progress-notifications'] = function(session, body)
+  local notif_data = client_notifs["dap"][body.progressId]
+  notif_data.notification = vim.notify(body.message and format_message(body.message) or "Complete", "info", {
+     icon = "",
+     replace = notif_data.notification,
+     timeout = 3000
+  })
+  notif_data.spinner = nil
+end
