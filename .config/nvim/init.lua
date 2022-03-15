@@ -398,9 +398,9 @@ set_keymap('n', '<leader>dt', "<cmd>lua require('dap').repl.toggle()<cr>") -- "t
 -- Symbols
 vim.fn.sign_define('DapStop', {text='🤡', texthl='', linehl='', numhl=''})
 vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakPointCondition', {text='🟥', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpointCondition', {text='🟥', texthl='', linehl='', numhl=''})
 vim.fn.sign_define('DapLogPoint', {text='🟣', texthl='', linehl='', numhl=''})
-vim.fn.sign_define('DapBreakPointRejected', {text='🟡', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapBreakpointRejected', {text='🟡', texthl='', linehl='', numhl=''})
 
 -- Python debugging
 dap.adapters.python = {
