@@ -449,16 +449,15 @@ dap.configurations.cpp = {
       request = 'launch',
       program = '${workspaceFolder}/bazel-bin/hyper/tools/sql_hyper/sql_hyper',
       args = {"!", "test.sql"},
-      runInTerminal = true,
-      stopOnEntry = true,
-      debuggerRoot = "${workspaceFolder}",
+      -- stopOnEntry = true,
+      sourcePath = "${workspaceFolder}",
     },
     {
       name = "Attach to gdb-server",
       type = 'lldb',
       request = 'attach',
       attachCommands = {"gdb-remote localhost:9999"},
-      debuggerRoot = "${workspaceFolder}",
+      sourcePath = "${workspaceFolder}",
     },
 }
 
