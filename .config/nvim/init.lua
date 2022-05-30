@@ -263,11 +263,11 @@ local on_attach = function(client, bufnr)
 end
 
 nvim_lsp["clangd"].setup {
-  capabilities = require('cmp_nvim_lsp').update_capabilities(nvim_lsp["clangd"].document_config.default_config.capabilities),
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
   -- to debug: '-log:verbose'
   -- --hidden-features
-  --cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000'},
-  cmd = { '/home/tsi/avogelsgesang/hyper-cache/devtoolset/clang/master_hyper.13.0.0.c2499864.rf28e1121/redhat7-x86_64-release/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000'},
+  -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
+  cmd = { '/home/tsi/avogelsgesang/Documents/llvm-project/build/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000'},
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 1000,
