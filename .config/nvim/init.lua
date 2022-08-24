@@ -95,9 +95,10 @@ set_keymap("n", "<leader>sv", ":source $MYVIMRC<cr>")
 local Plug = vim.fn['plug#']
 
 vim.call('plug#begin')
--- Themes
+-- Themes & general rendering
 Plug 'sjl/badwolf' -- badwolf theme
 Plug 'tomasr/molokai' -- molokai theme
+Plug 'kyazdani42/nvim-web-devicons' -- icons in Telescope
 -- General editing/navigation
 Plug 'ojroques/vim-oscyank' -- copy-paste over ssh
 Plug 'nvim-lua/plenary.nvim' -- Dependency of other plugins
