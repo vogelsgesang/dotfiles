@@ -35,6 +35,9 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 2 --keep 2 lines visible over/below the cursor
 vim.opt.sidescrolloff = 2
 
+--disable mouse
+vim.opt.mouse=""
+
 --do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
 vim.opt.writebackup = false
 
