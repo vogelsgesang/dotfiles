@@ -90,7 +90,6 @@ set_keymap("n", "<leader>sv", ":source $MYVIMRC<cr>")
 
 --TODO: textobj-argument
 --TODO: https://github.com/skywind3000/asynctasks.vim
---TODO: simrat39/symbols-outline.nvim -- symbol tree; couple of rendering issues; maybe revisit later
 
 local Plug = vim.fn['plug#']
 
@@ -115,6 +114,7 @@ Plug 'hrsh7th/nvim-cmp' -- Autocompletion plugin
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'stevearc/dressing.nvim' -- nicer UI for code actions; unfortunately typrhas rendering errors
+Plug 'simrat39/symbols-outline.nvim' -- symbol outline of current file
 Plug 'mfussenegger/nvim-dap' --  Debug adapter
 -- Other languages/syntax highlighting
 Plug 'bfrg/vim-cpp-modern' -- syntax highlighting for C++ code
@@ -381,6 +381,11 @@ vim.lsp.handlers["$/progress"] = function(_, result, ctx)
     notif_data.spinner = nil
   end
 end
+
+-- Symbols outline
+require("symbols-outline").setup()
+set_keymap('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
+
 
 
 --------------------------------------------
