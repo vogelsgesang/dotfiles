@@ -117,10 +117,7 @@ Plug 'stevearc/dressing.nvim' -- nicer UI for code actions; unfortunately typrha
 Plug 'simrat39/symbols-outline.nvim' -- symbol outline of current file
 Plug 'mfussenegger/nvim-dap' --  Debug adapter
 -- Other languages/syntax highlighting
-Plug 'bfrg/vim-cpp-modern' -- syntax highlighting for C++ code
-Plug 'rust-lang/rust.vim' -- syntax highlighting for Rust code
-Plug 'plasticboy/vim-markdown' -- markdown support
-Plug 'leafgarland/typescript-vim' -- typescript syntax support
+Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Treesitter
 vim.call('plug#end')
 
 vim.cmd("silent! colorscheme molokai")
@@ -199,6 +196,23 @@ notify.setup({
 vim.notify = notify
 set_keymap('n', '<leader>n', "<cmd>lua require('telescope').extensions.notify.notify()<cr>")
 
+
+--------------------------------------------
+-- Treesitter
+--------------------------------------------
+
+require('nvim-treesitter.configs').setup({
+    ensure_installed = { "c", "cpp", "typescript", "lua", "rust", "bash", "markdown", "rst", "json", "yaml", "proto"},
+    sync_install = false,
+    auto_install = false,
+    highlight = {
+        enable = true,
+    },
+})
+
+vim.opt.foldlevelstart=999
+vim.opt.foldmethod="expr"
+vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
 
 --------------------------------------------
 -- LSP support
