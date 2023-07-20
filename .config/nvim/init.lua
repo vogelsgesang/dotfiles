@@ -54,35 +54,34 @@ vim.opt.wildignore:append("*~,*.swp,*.tmp")
 --------------------------
 -- Overwrite built-in shotcuts
 --------------------------
-local function set_keymap(a, b, c) vim.api.nvim_set_keymap(a, b, c, { noremap=true, silent=true }) end
 --disable ex mode
-set_keymap("n", "Q", "")
+vim.keymap.set("n", "Q", "")
 --do not overwrite the default buffer when using x
-set_keymap("n", "x", '"_x')
+vim.keymap.set("n", "x", '"_x')
 
 
 --------------------------
 -- General, useful shortcuts
 --------------------------
 --normal mode: comment out word
-set_keymap("n", "<leader>*", "viw<esc>a*/<esc>hbi/*<esc>lel")
+vim.keymap.set("n", "<leader>*", "viw<esc>a*/<esc>hbi/*<esc>lel")
 --normal mode: quote word in double quotes
-set_keymap("n", '<leader>"', 'viw<esc>a"<esc>hbi"<esc>lel')
+vim.keymap.set("n", '<leader>"', 'viw<esc>a"<esc>hbi"<esc>lel')
 --normal mode: quote word in single quotes
-set_keymap("n", "<leader>'", "viw<esc>a'<esc>hbi'<esc>lel")
+vim.keymap.set("n", "<leader>'", "viw<esc>a'<esc>hbi'<esc>lel")
 --normal mode: quote word in single quotes
-set_keymap("n", "<leader>`", "viw<esc>a`<esc>hbi`<esc>lel")
+vim.keymap.set("n", "<leader>`", "viw<esc>a`<esc>hbi`<esc>lel")
 --visual mode: wrap in double quotes
-set_keymap("v", '<leader>"', '<esc>`<i"<esc>`>i"<esc>')
+vim.keymap.set("v", '<leader>"', '<esc>`<i"<esc>`>i"<esc>')
 --visual mode: wrap in single quotes
-set_keymap("v", "<leader>'", "<esc>`<i'<esc>`>i'<esc>")
+vim.keymap.set("v", "<leader>'", "<esc>`<i'<esc>`>i'<esc>")
 --visual mode: wrap in single quotes
-set_keymap("v", "<leader>`", "<esc>`<i`<esc>`>i`<esc>")
+vim.keymap.set("v", "<leader>`", "<esc>`<i`<esc>`>i`<esc>")
 --use jk to exit insert mode
-set_keymap("i", "jk", "<esc>")
+vim.keymap.set("i", "jk", "<esc>")
 --create mappings to edit the vimrc easily
-set_keymap("n", "<leader>ev", ":split $MYVIMRC<cr>")
-set_keymap("n", "<leader>sv", ":source $MYVIMRC<cr>")
+vim.keymap.set("n", "<leader>ev", ":split $MYVIMRC<cr>")
+vim.keymap.set("n", "<leader>sv", ":source $MYVIMRC<cr>")
 
 --------------------------
 --Plugins
@@ -123,33 +122,36 @@ vim.call('plug#end')
 vim.cmd("silent! colorscheme molokai")
 
 -- terminal config
-set_keymap("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 --OSCYank config
 vim.cmd("autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankReg +' | endif")
 
 --Nerdree
-set_keymap("n", "<leader>t", ":NERDTreeToggle<CR>")
+vim.keymap.set("n", "<leader>t", ":NERDTreeToggle<CR>")
 
 --------------------------------------------
 -- Telescope
 --------------------------------------------
+local telescope = require("telescope");
+local telescope_builtin = require("telescope.builtin");
 
 -- The `<leader>f` prefix is for toplevel entry points, independent of the current buffer
 -- "f" stands for "find"
-set_keymap('n', '<leader>f<CR>', "<cmd>lua require('telescope.builtin').resume()<cr>")
-set_keymap('n', '<leader>ft', "<cmd>lua require('telescope.builtin').builtin()<cr>")
-set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>")
-set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>")
-set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers({ sort_mru = true, ignore_current_buffer = true })<cr>")
-set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>")
-set_keymap('n', '<leader>fs', "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>")
+vim.keymap.set('n', '<leader>f<CR>', telescope_builtin.resume)
+vim.keymap.set('n', '<leader>ft', telescope_builtin.builtin)
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files)
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep)
+vim.keymap.set('n', '<leader>fb', function()
+   telescope_builtin.buffers({ sort_mru = true, ignore_current_buffer = true })
+end)
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags)
+vim.keymap.set('n', '<leader>fs', telescope_builtin.lsp_dynamic_workspace_symbols)
 
 -- Git history. `h` as in "history"
-set_keymap('n', '<leader>h', "<cmd>lua require('telescope.builtin').git_bcommits()<cr>")
+vim.keymap.set('n', '<leader>h', telescope_builtin.git_bcommits)
 
 
-local telescope = require("telescope");
 telescope.setup ({
   defaults = {
     mappings = {
@@ -194,7 +196,7 @@ notify.setup({
     }
 })
 vim.notify = notify
-set_keymap('n', '<leader>n', "<cmd>lua require('telescope').extensions.notify.notify()<cr>")
+vim.keymap.set('n', '<leader>n', require('telescope').extensions.notify.notify)
 
 
 --------------------------------------------
@@ -249,36 +251,41 @@ cmp.setup({
 -----------------------
 -- Shortcuts for diagnostics
 
-set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-set_keymap('n', '<space>q', "<cmd>lua require('telescope.builtin').diagnostics()<cr>")
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', telescope_builtin.diagnostics)
 
 -----------------------
 -- Setup lspconfig.
 
--- Use an on_attach function to only map the following keys
+-- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(a, b, c) vim.api.nvim_buf_set_keymap(bufnr, a, b, c, { noremap=true, silent=true }) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
-  buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-  buf_set_keymap('n', 'gr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>")
-  buf_set_keymap('n', 'gd', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>")
-  buf_set_keymap('n', 'g<Tab>', '<cmd>ClangdSwitchSourceHeader<CR>')
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-  buf_set_keymap('v', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>')
-  buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format({async=True})<CR>')
-  buf_set_keymap('v', '<leader>f', '<cmd>lua vim.lsp.buf.range_formatting()<CR>')
-end
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
+    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition)
+    vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references)
+    vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions)
+    vim.keymap.set('n', 'g<Tab>', ClangdSwitchSourceHeader)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
+    vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action)
+    vim.keymap.set('n', '<leader>f', vim.lsp.buf.format({async=True}))
+    vim.keymap.set('n', '<leader>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+    vim.keymap.set('v', '<leader>f', vim.lsp.buf.range_formatting)
+  end
+})
 
 nvim_lsp["clangd"].setup {
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
@@ -398,7 +405,7 @@ end
 
 -- Symbols outline
 require("symbols-outline").setup()
-set_keymap('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
+vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
 
 
 
@@ -408,15 +415,19 @@ set_keymap('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
 local dap = require('dap')
 
 -- Keymap for debugging
-set_keymap('n', '<leader>dc', "<cmd>lua require('dap').continue()<cr>")
-set_keymap('n', '<leader>dr', "<cmd>lua require('dap').run_last()<cr>")
-set_keymap('n', '<leader>dn', "<cmd>lua require('dap').step_over()<cr>")
-set_keymap('n', '<leader>ds', "<cmd>lua require('dap').step_into()<cr>")
-set_keymap('n', '<leader>df', "<cmd>lua require('dap').step_out()<cr>") -- "f" as in "finish"
-set_keymap('n', '<leader>db', "<cmd>lua require('dap').toggle_breakpoint()<cr>")
-set_keymap('n', '<leader>dB', "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>")
-set_keymap('n', '<leader>dl', "<cmd>lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>")
-set_keymap('n', '<leader>dt', "<cmd>lua require('dap').repl.toggle()<cr>") -- "t" as in "terminal"
+vim.keymap.set('n', '<leader>dc', dap.continue)
+vim.keymap.set('n', '<leader>dr', dap.run_last)
+vim.keymap.set('n', '<leader>dn', dap.step_over)
+vim.keymap.set('n', '<leader>ds', dap.step_into)
+vim.keymap.set('n', '<leader>df', dap.step_out) -- "f" as in "finish"
+vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint)
+vim.keymap.set('n', '<leader>dB', function()
+   dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+end)
+vim.keymap.set('n', '<leader>dl', function()
+   dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
+end)
+vim.keymap.set('n', '<leader>dt', dap.repl.toggle) -- "t" as in "terminal"
 
 -- Symbols
 vim.fn.sign_define('DapStop', {text='🤡', texthl='', linehl='', numhl=''})
