@@ -292,7 +292,7 @@ nvim_lsp["clangd"].setup {
   -- to debug: '-log:verbose'
   -- --hidden-features
   -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
-  cmd = { '/home/tsi/avogelsgesang/Documents/llvm-project/build/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000'},
+  cmd = { 'clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 1000,
