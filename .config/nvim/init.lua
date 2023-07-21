@@ -98,7 +98,7 @@ Plug 'sjl/badwolf' -- badwolf theme
 Plug 'tomasr/molokai' -- molokai theme
 Plug 'kyazdani42/nvim-web-devicons' -- icons in Telescope
 -- General editing/navigation
-Plug 'ojroques/vim-oscyank' -- copy-paste over ssh
+Plug 'ojroques/nvim-osc52' -- copy-paste over ssh
 Plug 'nvim-lua/plenary.nvim' -- Dependency of other plugins
 Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 Plug 'nvim-telescope/telescope.nvim' -- fuzzy matcher
@@ -125,7 +125,13 @@ vim.cmd("silent! colorscheme molokai")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 --OSCYank config
-vim.cmd("autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | execute 'OSCYankReg +' | endif")
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+      require('osc52').copy_register('+')
+    end
+  end
+})
 
 --Nerdree
 vim.keymap.set("n", "<leader>t", ":NERDTreeToggle<CR>")
