@@ -106,6 +106,8 @@ Plug 'nvim-telescope/telescope-ui-select.nvim' -- integration of LSP into Telesc
 Plug 'rcarriga/nvim-notify' -- LSP notifications
 Plug 'scrooloose/nerdtree' -- file tree explorer
 Plug 'godlygeek/tabular' -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
+-- languages/syntax highlighting
+Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Treesitter
 -- Language server support
 Plug 'neovim/nvim-lspconfig' -- LSP config
 Plug 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
@@ -115,8 +117,6 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'stevearc/dressing.nvim' -- nicer UI for code actions; unfortunately typrhas rendering errors
 Plug 'simrat39/symbols-outline.nvim' -- symbol outline of current file
 Plug 'mfussenegger/nvim-dap' --  Debug adapter
--- Other languages/syntax highlighting
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Treesitter
 vim.call('plug#end')
 
 vim.cmd("silent! colorscheme molokai")
@@ -231,22 +231,42 @@ local nvim_lsp = require('lspconfig')
 
 -----------------------
 -- Setup nvim-cmp.
+luasnip = require('luasnip')
+
 cmp.setup({
-  completion = {
-    autocomplete = false,
-  },
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      luasnip.lsp_expand(args.body) -- For `luasnip` users.
     end
   },
-  mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  mapping = cmp.mapping.preset.insert({
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
+    ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
+    -- C-b (back) C-f (forward) for snippet placeholder navigation.
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
   }, {
@@ -279,17 +299,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition)
     vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references)
     vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions)
-    vim.keymap.set('n', 'g<Tab>', ClangdSwitchSourceHeader)
+    vim.keymap.set('n', 'g<Tab>', "<cmd>ClangdSwitchSourceHeader<CR>")
     vim.keymap.set('n', 'K', vim.lsp.buf.hover)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
-    vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action)
-    vim.keymap.set('n', '<leader>f', vim.lsp.buf.format({async=True}))
+    -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action)
     vim.keymap.set('n', '<leader>f', function()
       vim.lsp.buf.format { async = true }
     end, opts)
-    vim.keymap.set('v', '<leader>f', vim.lsp.buf.range_formatting)
+    -- vim.keymap.set('v', '<leader>f', vim.lsp.buf.range_formatting)
   end
 })
 
