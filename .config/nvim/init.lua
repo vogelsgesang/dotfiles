@@ -41,6 +41,9 @@ vim.opt.mouse=""
 --do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
 vim.opt.writebackup = false
 
+-- Github limits commit messages to 72 characters per line
+-- vim.api.nvim_create_autocmd("BufRead,BufNewFile", {pattern = "COMMIT_EDITMSG", command = "setlocal textwidth=0"})
+
 --------------------------
 --command line autocompletion
 --------------------------
@@ -156,6 +159,9 @@ vim.keymap.set('n', '<leader>fs', telescope_builtin.lsp_dynamic_workspace_symbol
 
 -- Git history. `h` as in "history"
 vim.keymap.set('n', '<leader>h', telescope_builtin.git_bcommits)
+
+-- Previously opened files
+-- vim.keymap.set('n', '<leader>o', telescope_builtin.old_files)
 
 
 telescope.setup ({
