@@ -436,7 +436,41 @@ end
 require("symbols-outline").setup()
 vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
 
+--------------------------------------------
+-- Hyper IR LSP
+--------------------------------------------
 
+vim.filetype.add({
+  extension = {
+    hir = 'hyper_ir',
+  }
+})
+
+require('lspconfig.configs').hyper_ir_lsp = {
+  default_config = {
+    cmd = { '/home/avogelsgesang/Documents/hyper-ir-lsp/target/release/hyper-ir-lsp' },
+    name = 'Hyper IR LSP',
+    filetypes = {'hyper_ir'},
+    root_dir = function(fname)
+      return nvim_lsp.util.find_git_ancestor(fname)
+    end,
+  }
+}
+
+nvim_lsp["hyper_ir_lsp"].setup({})
+
+local hyper_ir_links = {
+  ['@lsp.type.keyword.hyper_ir'] = '@keyword',
+  ['@lsp.type.modifier.hyper_ir'] = '@keyword',
+  ['@lsp.type.type.hyper_ir'] = '@type',
+  ['@lsp.type.variable.hyper_ir'] = 'Identifier',
+  ['@lsp.type.number.hyper_ir'] = '@number',
+  ['@lsp.type.string.hyper_ir'] = '@string',
+}
+
+for newgroup, oldgroup in pairs(hyper_ir_links) do
+  vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
+end
 
 --------------------------------------------
 -- Debug adapter
