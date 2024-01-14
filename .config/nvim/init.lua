@@ -309,8 +309,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'K', vim.lsp.buf.hover)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
-    -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action)
+    vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action)
     vim.keymap.set('n', '<leader>f', function()
       vim.lsp.buf.format { async = true }
     end, opts)
@@ -318,17 +317,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end
 })
 
-nvim_lsp["clangd"].setup {
+nvim_lsp["clangd"].setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
   -- to debug: '-log:verbose'
   -- --hidden-features
   -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
   cmd = { 'clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
-  on_attach = on_attach,
   flags = {
-    debounce_text_changes = 1000,
+    debounce_text_changes = 300,
   }
-}
+})
 
 vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   local client = vim.lsp.get_client_by_id(ctx.client_id)
