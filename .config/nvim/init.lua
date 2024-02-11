@@ -14,6 +14,9 @@ vim.opt.fileformats = "unix"
 --line numbers
 vim.opt.number = true
 
+--clipboard
+vim.opt.clipboard = 'unnamedplus'
+
 --splitting
 vim.opt.splitbelow = true --put horizontal splits below
 vim.opt.splitright = true --put vertical splits to the right
@@ -63,8 +66,9 @@ vim.opt.wildignore:append("*~,*.swp,*.tmp")
 --------------------------
 --disable ex mode
 vim.keymap.set("n", "Q", "")
---do not overwrite the default buffer when using x
+--do not overwrite the default buffer when using `x` or `c`
 vim.keymap.set("n", "x", '"_x')
+vim.keymap.set("n", "c", '"_c')
 
 
 --------------------------
