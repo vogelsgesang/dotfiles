@@ -300,8 +300,15 @@ vim.keymap.set('n', '<space>q', telescope_builtin.diagnostics)
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client == nil then
+      return
+    end
+
     -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    if client.server_capabilities.completionProvider == nil then
+      vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    end
 
     -- Buffer local mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -327,11 +334,47 @@ nvim_lsp["clangd"].setup({
   -- to debug: '-log:verbose'
   -- --hidden-features
   -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
-  cmd = { 'clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
+  cmd = { '/Users/avogelsgesang/hyper/hyper-db/bazel-hyper-db/external/clang_darwin/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
   flags = {
     debounce_text_changes = 300,
   }
 })
+
+-- Lua language server for editing Neovim config
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
+require'lspconfig'.lua_ls.setup {
+  on_init = function(client)
+    local path = "."
+    if client.workspace_folders then
+      path = client.workspace_folders[1].name
+    end
+    if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
+      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+        Lua = {
+          runtime = {
+            -- Tell the language server which version of Lua you're using
+            -- (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT'
+          },
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            }
+            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+            -- library = vim.api.nvim_get_runtime_file("", true)
+          }
+        }
+      })
+
+      client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+    end
+    return true
+  end
+}
 
 vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   local client = vim.lsp.get_client_by_id(ctx.client_id)
