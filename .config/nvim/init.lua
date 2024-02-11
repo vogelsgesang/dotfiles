@@ -41,6 +41,9 @@ vim.opt.mouse=""
 --do not write a backup file (does not play nicely with file watches, f.e. by Grunt)
 vim.opt.writebackup = false
 
+-- trigger `CursorHold` events after 1.5 seconds
+vim.opt.updatetime = 1500
+
 -- Github limits commit messages to 72 characters per line
 -- vim.api.nvim_create_autocmd("BufRead,BufNewFile", {pattern = "COMMIT_EDITMSG", command = "setlocal textwidth=0"})
 
@@ -321,12 +324,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
     -- vim.keymap.set('v', '<leader>f', vim.lsp.buf.range_formatting)
 
+    -- Trigger highlighting of symbol under cursor by keeping the cursor still
+    if client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_autocmd('CursorHold', { callback = vim.lsp.buf.document_highlight})
+      vim.api.nvim_create_autocmd('CursorHoldI', { callback = vim.lsp.buf.document_highlight})
+      vim.api.nvim_create_autocmd('CursorMoved', { callback = vim.lsp.buf.clear_references})
+    end
+
     -- clangd-specific key bindings
     if client.name == "clangd" then
       vim.keymap.set('n', 'g<Tab>', "<cmd>ClangdSwitchSourceHeader<CR>")
     end
   end
 })
+
+-- Highlighting of references
+vim.api.nvim_set_hl(0, 'LspReferenceText', { bg = '#5555aa', default = true })
+vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#5555aa', default = true })
+vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 
 nvim_lsp["clangd"].setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
