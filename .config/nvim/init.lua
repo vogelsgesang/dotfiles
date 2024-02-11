@@ -323,6 +323,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.buf.format { async = true }
     end, opts)
 
+    -- Inlay hints
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(ev.buf, true)
+      -- Allow to toggle inlay hints
+      vim.keymap.set('n', '<leader>i', function ()
+        local inlayHintEnabled = not vim.lsp.inlay_hint.is_enabled()
+        vim.lsp.inlay_hint.enable(ev.buf, inlayHintEnabled)
+      end)
+    end
+
     -- Trigger highlighting of symbol under cursor by keeping the cursor still
     if client.server_capabilities.documentHighlightProvider then
       vim.api.nvim_create_autocmd('CursorHold', { callback = vim.lsp.buf.document_highlight})
