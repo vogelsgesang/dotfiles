@@ -34,6 +34,7 @@ vim.opt.smartcase = true
 vim.opt.cursorline = true
 vim.opt.scrolloff = 2 --keep 2 lines visible over/below the cursor
 vim.opt.sidescrolloff = 2
+vim.opt.smoothscroll = true
 
 --disable mouse
 vim.opt.mouse=""
