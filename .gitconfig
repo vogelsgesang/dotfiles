@@ -6,7 +6,7 @@
 [diff]
 	algorithm = histogram
 [core]
-	editor = vim
+	editor = nvim
 [rebase]
 	autosquash = true
 [alias]
