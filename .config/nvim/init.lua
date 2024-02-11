@@ -319,10 +319,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
     vim.keymap.set({'n', 'v'}, '<leader>ca', vim.lsp.buf.code_action)
-    vim.keymap.set('n', '<leader>f', function()
+    vim.keymap.set({'n', 'v'}, '<leader>f', function()
       vim.lsp.buf.format { async = true }
     end, opts)
-    -- vim.keymap.set('v', '<leader>f', vim.lsp.buf.range_formatting)
 
     -- Trigger highlighting of symbol under cursor by keeping the cursor still
     if client.server_capabilities.documentHighlightProvider then
