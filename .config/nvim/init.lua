@@ -216,7 +216,21 @@ vim.keymap.set('n', '<leader>n', require('telescope').extensions.notify.notify)
 --------------------------------------------
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = { "c", "cpp", "typescript", "lua", "rust", "bash", "markdown", "rst", "json", "yaml", "proto"},
+    ensure_installed = {
+       -- System programming
+       "c", "cpp", "rust", "proto",
+        -- Web development
+       "typescript", "css", "html", "sql",
+       -- Scripting
+       "python", "bash",
+       -- Build systems
+       "cmake", "starlark",
+       -- Neovim itself
+       "lua", "vimdoc",
+       -- Text editing
+       "markdown", "rst", "latex",
+       -- File format
+       "json", "yaml"},
     sync_install = false,
     auto_install = false,
     highlight = {
@@ -224,6 +238,7 @@ require('nvim-treesitter.configs').setup({
     },
 })
 
+-- Use treesitter for code folding
 vim.opt.foldlevelstart=999
 vim.opt.foldmethod="expr"
 vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
