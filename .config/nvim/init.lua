@@ -114,7 +114,7 @@ Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
 Plug 'nvim-telescope/telescope.nvim' -- fuzzy matcher
 Plug 'nvim-telescope/telescope-ui-select.nvim' -- integration of LSP into Telescope
 Plug 'rcarriga/nvim-notify' -- LSP notifications
-Plug 'scrooloose/nerdtree' -- file tree explorer
+Plug 'nvim-tree/nvim-tree.lua' -- file tree explorer
 Plug 'godlygeek/tabular' -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
 -- languages/syntax highlighting
 Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Treesitter
@@ -134,8 +134,16 @@ vim.cmd("silent! colorscheme molokai")
 -- terminal config
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
---Nerdree
-vim.keymap.set("n", "<leader>t", ":NERDTreeToggle<CR>")
+-- Nvim tree
+require("nvim-tree").setup({
+  update_focused_file = {
+    enable = true,
+  },
+  live_filter = {
+    always_show_folders = false,
+  }
+})
+vim.keymap.set("n", "<leader>t", ":NvimTreeFindFile<CR>")
 
 --------------------------------------------
 -- Telescope
