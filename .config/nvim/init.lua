@@ -55,7 +55,7 @@ vim.opt.updatetime = 1500
 --command line autocompletion
 --------------------------
 vim.opt.wildmenu = true
-vim.opt.wildmode = longest,list
+vim.opt.wildmode = "longest,list"
 vim.opt.wildignore = "*.a,*.o"
 vim.opt.wildignore:append("*.bmp,*.gif,*.ico,*.jpg,*.png")
 vim.opt.wildignore:append(".DS_Store,.git,.hg,.svn")
