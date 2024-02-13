@@ -48,6 +48,9 @@ vim.opt.writebackup = false
 -- trigger `CursorHold` events after 1.5 seconds
 vim.opt.updatetime = 1500
 
+-- enable spell checking
+vim.opt_global.spell = true
+
 -- Github limits commit messages to 72 characters per line
 -- vim.api.nvim_create_autocmd("BufRead,BufNewFile", {pattern = "COMMIT_EDITMSG", command = "setlocal textwidth=0"})
 
