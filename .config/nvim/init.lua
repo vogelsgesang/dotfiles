@@ -367,6 +367,7 @@ vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 
 nvim_lsp["clangd"].setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  filetypes = {'c', 'cpp', 'objc', 'objcpp', 'cuda'},
   -- to debug: '-log:verbose'
   -- --hidden-features
   -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
