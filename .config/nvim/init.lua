@@ -131,6 +131,7 @@ require("lazy").setup({
   'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
    -- languages/syntax highlighting
   {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
+  'nvim-treesitter/nvim-treesitter-context',
    -- Language server support
   'neovim/nvim-lspconfig', -- LSP config
   'rcarriga/nvim-notify', -- LSP notifications
@@ -261,6 +262,19 @@ require('nvim-treesitter.configs').setup({
 vim.opt.foldlevelstart=999
 vim.opt.foldmethod="expr"
 vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
+
+
+-- Use treesitter to display context
+require('treesitter-context').setup{
+  enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+  max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
+  min_window_height = 6, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  line_numbers = true,
+  multiline_threshold = 1, -- Maximum number of lines to show for a single context
+  trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  mode = 'topline',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+}
+
 
 --------------------------------------------
 -- LSP support
