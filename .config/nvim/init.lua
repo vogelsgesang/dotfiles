@@ -70,7 +70,6 @@ vim.keymap.set("n", "Q", "")
 vim.keymap.set("n", "x", '"_x')
 vim.keymap.set("n", "c", '"_c')
 
-
 --------------------------
 -- General, useful shortcuts
 --------------------------
@@ -94,47 +93,61 @@ vim.keymap.set("i", "jk", "<esc>")
 vim.keymap.set("n", "<leader>ev", ":split $MYVIMRC<cr>")
 vim.keymap.set("n", "<leader>sv", ":source $MYVIMRC<cr>")
 
+-- terminal config
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
+--------------------------
+--Set up plugin manager
+--------------------------
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
 --------------------------
 --Plugins
 --------------------------
 
---TODO: textobj-argument
---TODO: https://github.com/skywind3000/asynctasks.vim
-
-local Plug = vim.fn['plug#']
-
-vim.call('plug#begin')
+require("lazy").setup({
 -- Themes & general rendering
-Plug 'sjl/badwolf' -- badwolf theme
-Plug 'tomasr/molokai' -- molokai theme
-Plug 'kyazdani42/nvim-web-devicons' -- icons in Telescope
--- General editing/navigation
-Plug 'nvim-lua/plenary.nvim' -- Dependency of other plugins
-Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
-Plug 'nvim-telescope/telescope.nvim' -- fuzzy matcher
-Plug 'nvim-telescope/telescope-ui-select.nvim' -- integration of LSP into Telescope
-Plug 'rcarriga/nvim-notify' -- LSP notifications
-Plug 'nvim-tree/nvim-tree.lua' -- file tree explorer
-Plug 'godlygeek/tabular' -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
--- languages/syntax highlighting
-Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'}) -- Treesitter
--- Language server support
-Plug 'neovim/nvim-lspconfig' -- LSP config
-Plug 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
-Plug 'hrsh7th/nvim-cmp' -- Autocompletion plugin
-Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'stevearc/dressing.nvim' -- nicer UI for code actions; unfortunately typrhas rendering errors
-Plug 'simrat39/symbols-outline.nvim' -- symbol outline of current file
-Plug 'mfussenegger/nvim-dap' --  Debug adapter
-vim.call('plug#end')
+  'sjl/badwolf', -- badwolf theme
+  'tomasr/molokai', -- molokai theme
+  'kyazdani42/nvim-web-devicons', -- icons in Telescope
+   -- General editing/navigation
+  'nvim-lua/plenary.nvim', -- Dependency of other plugins
+  {'nvim-telescope/telescope-fzf-native.nvim', build = 'make', },
+  'nvim-telescope/telescope.nvim', -- fuzzy matcher
+  'nvim-telescope/telescope-ui-select.nvim', -- integration of LSP into Telescope
+  'nvim-tree/nvim-tree.lua', -- file tree explorer
+  'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
+   -- languages/syntax highlighting
+  {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
+   -- Language server support
+  'neovim/nvim-lspconfig', -- LSP config
+  'rcarriga/nvim-notify', -- LSP notifications
+  'hrsh7th/cmp-nvim-lsp', -- LSP source for nvim-cmp
+  'hrsh7th/nvim-cmp', -- Autocompletion plugin
+  'L3MON4D3/LuaSnip',
+  'saadparwaiz1/cmp_luasnip',
+  'stevearc/dressing.nvim', -- nicer UI for code actions; unfortunately typrhas rendering errors
+  'simrat39/symbols-outline.nvim', -- symbol outline of current file
+  'mfussenegger/nvim-dap', --  Debug adapter
+});
 
 vim.cmd("silent! colorscheme molokai")
 
--- terminal config
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
-
+--------------------------------------------
 -- Nvim tree
+--------------------------------------------
 require("nvim-tree").setup({
   update_focused_file = {
     enable = true,
