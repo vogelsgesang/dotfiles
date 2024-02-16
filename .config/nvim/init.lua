@@ -132,6 +132,7 @@ require("lazy").setup({
   'nvim-telescope/telescope-ui-select.nvim', -- integration of LSP into Telescope
   'nvim-tree/nvim-tree.lua', -- file tree explorer
   'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
+  { "karb94/neoscroll.nvim", config = function () require('neoscroll').setup {} end }, -- smooth scrolling
    -- languages/syntax highlighting
   {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
   'nvim-treesitter/nvim-treesitter-context',
