@@ -284,53 +284,7 @@ require('treesitter-context').setup{
 -- LSP support
 --------------------------------------------
 
-local cmp = require'cmp'
 local nvim_lsp = require('lspconfig')
-
------------------------
--- Setup nvim-cmp.
-local luasnip = require('luasnip')
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body) -- For `luasnip` users.
-    end
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
-    ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
-    -- C-b (back) C-f (forward) for snippet placeholder navigation.
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-})
 
 -----------------------
 -- Shortcuts for diagnostics
@@ -396,6 +350,13 @@ vim.api.nvim_set_hl(0, 'LspReferenceText', { bg = '#5555aa', default = true })
 vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#5555aa', default = true })
 vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 
+-- Symbols outline
+require("symbols-outline").setup()
+vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
+
+-----------------------
+-- Setup clangd
+
 -- Locate clangd
 local clangd_path = 'clangd'
 local clangd_alternative_paths = {
@@ -455,6 +416,54 @@ require'lspconfig'.lua_ls.setup {
   end
 }
 
+-----------------------
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+local luasnip = require('luasnip')
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body) -- For `luasnip` users.
+    end
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
+    ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
+    -- C-b (back) C-f (forward) for snippet placeholder navigation.
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-----------------------
+-- LSP notifications
 vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   local client = vim.lsp.get_client_by_id(ctx.client_id)
   local lvl = ({
@@ -472,7 +481,7 @@ vim.lsp.handlers['window/showMessage'] = function(_, result, ctx)
   })
 end
 
-
+-----------------------
 -- LSP progress notifications
 -- based on https://github.com/rcarriga/nvim-notify/issues/43#issuecomment-1030604806
 local client_notifs = {}
@@ -558,10 +567,6 @@ vim.lsp.handlers["$/progress"] = function(_, result, ctx)
     notif_data.spinner = nil
   end
 end
-
--- Symbols outline
-require("symbols-outline").setup()
-vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
 
 --------------------------------------------
 -- Hyper IR LSP
