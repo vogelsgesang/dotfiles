@@ -289,7 +289,7 @@ local nvim_lsp = require('lspconfig')
 
 -----------------------
 -- Setup nvim-cmp.
-luasnip = require('luasnip')
+local luasnip = require('luasnip')
 
 cmp.setup({
   snippet = {
@@ -396,14 +396,24 @@ vim.api.nvim_set_hl(0, 'LspReferenceText', { bg = '#5555aa', default = true })
 vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#5555aa', default = true })
 vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 
+-- Locate clangd
+local clangd_path = 'clangd'
+local clangd_alternative_paths = {
+   '/Users/avogelsgesang/hyper/hyper-db/bazel-hyper-db/external/clang_darwin/bin/clangd'
+}
+for _, p in pairs(clangd_alternative_paths) do
+   if vim.loop.fs_stat(p) then
+      clangd_path = p
+      break
+   end
+end
+
 nvim_lsp["clangd"].setup({
   capabilities = require('cmp_nvim_lsp').default_capabilities(),
   filetypes = {'c', 'cpp', 'objc', 'objcpp', 'cuda'},
   -- to debug: '-log:verbose'
-  -- --hidden-features
-  -- cmd = { 'clangd', '--enable-config', '--use-dirty-headers', '--limit-references=10000', '--limit-results=10000', '--hidden-features'},
-  -- cmd = { '/Users/avogelsgesang/hyper/hyper-db/bazel-hyper-db/external/clang_darwin/bin/clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
-  cmd = { 'clangd', '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
+  -- more features: `--hidden-features`
+  cmd = { clangd_path, '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
   flags = {
     debounce_text_changes = 300,
   }
