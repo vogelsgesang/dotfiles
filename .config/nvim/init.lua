@@ -137,6 +137,8 @@ require("lazy").setup({
   {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
   'nvim-treesitter/nvim-treesitter-context',
    -- Language server support
+  'williamboman/mason.nvim', -- Installation of LSP servers
+  'williamboman/mason-lspconfig.nvim', -- Integration between mason and nvim-lspconfig
   'neovim/nvim-lspconfig', -- LSP config
   'rcarriga/nvim-notify', -- LSP notifications
   'hrsh7th/cmp-nvim-lsp', -- LSP source for nvim-cmp
@@ -284,6 +286,10 @@ require('treesitter-context').setup{
 -- LSP support
 --------------------------------------------
 
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "lua_ls", "clangd" },
+})
 local nvim_lsp = require('lspconfig')
 
 -----------------------
@@ -360,7 +366,8 @@ vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
 -- Locate clangd
 local clangd_path = 'clangd'
 local clangd_alternative_paths = {
-   '/Users/avogelsgesang/hyper/hyper-db/bazel-hyper-db/external/clang_darwin/bin/clangd'
+   '/Users/avogelsgesang/hyper/hyper-db/bazel-hyper-db/external/clang_darwin/bin/clangd',
+   '/home/avogelsgesang/Documents/llvm-project/build/bin/clangd',
 }
 for _, p in pairs(clangd_alternative_paths) do
    if vim.loop.fs_stat(p) then
