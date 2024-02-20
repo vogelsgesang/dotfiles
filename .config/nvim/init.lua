@@ -301,7 +301,13 @@ require("mason-lspconfig").setup({
 local nvim_lsp = require('lspconfig')
 
 -----------------------
--- Shortcuts for diagnostics
+-- Configure diagnostics
+
+local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
@@ -395,9 +401,11 @@ nvim_lsp["clangd"].setup({
   }
 })
 
+
+-----------------------
 -- Lua language server for editing Neovim config
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
-require'lspconfig'.lua_ls.setup {
+nvim_lsp["lua_ls"].setup({
   on_init = function(client)
     local path = "."
     if client.workspace_folders then
@@ -429,7 +437,7 @@ require'lspconfig'.lua_ls.setup {
     end
     return true
   end
-}
+})
 
 -----------------------
 -- Setup nvim-cmp.
