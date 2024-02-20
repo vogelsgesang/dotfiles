@@ -132,7 +132,12 @@ require("lazy").setup({
   'nvim-telescope/telescope-ui-select.nvim', -- integration of LSP into Telescope
   'nvim-tree/nvim-tree.lua', -- file tree explorer
   'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
-  { "karb94/neoscroll.nvim", config = function () require('neoscroll').setup {} end }, -- smooth scrolling
+  { 'karb94/neoscroll.nvim', config = function () require('neoscroll').setup() end }, -- smooth scrolling
+   -- version control
+  'rhysd/git-messenger.vim', -- reveal git log on current line
+  'tpope/vim-fugitive', -- all vim commands Gdiff, Gblame, ...
+  {'lewis6991/gitsigns.nvim', config = function () require('gitsigns').setup() end } , -- gutter, highlighting uncommitted changes
+
    -- languages/syntax highlighting
   {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
   'nvim-treesitter/nvim-treesitter-context',
@@ -149,6 +154,9 @@ require("lazy").setup({
   'simrat39/symbols-outline.nvim', -- symbol outline of current file
   'mfussenegger/nvim-dap', --  Debug adapter
 });
+
+vim.g.git_messenger_floating_win_opts = { ['border'] = 'single' }
+vim.g.git_messenger_popup_content_margins = false
 
 vim.cmd("silent! colorscheme molokai")
 
