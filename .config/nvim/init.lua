@@ -124,7 +124,7 @@ require("lazy").setup({
 -- Themes & general rendering
   'sjl/badwolf', -- badwolf theme
   'tomasr/molokai', -- molokai theme
-  'kyazdani42/nvim-web-devicons', -- icons in Telescope
+  {'kyazdani42/nvim-web-devicons', config = function () require('nvim-web-devicons').setup() end }, -- icons in Telescope
    -- General editing/navigation
   'nvim-lua/plenary.nvim', -- Dependency of other plugins
   {'nvim-telescope/telescope-fzf-native.nvim', build = 'make', },
@@ -133,6 +133,7 @@ require("lazy").setup({
   'nvim-tree/nvim-tree.lua', -- file tree explorer
   'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
   { 'karb94/neoscroll.nvim', config = function () require('neoscroll').setup() end }, -- smooth scrolling
+  { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' } }, -- status bar
    -- version control
   'rhysd/git-messenger.vim', -- reveal git log on current line
   'tpope/vim-fugitive', -- all vim commands Gdiff, Gblame, ...
@@ -225,6 +226,42 @@ telescope.setup ({
 telescope.load_extension("ui-select")
 telescope.load_extension("fzf")
 
+--------------------------------------------
+-- Lualine
+--------------------------------------------
+
+require('lualine').setup {
+  options = {
+    theme = 'auto',
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    globalstatus = false,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'diff', {'diagnostics', symbols = { error = " ", warn = " ", hint = " ", info = " " }}},
+    lualine_c = {'filename'},
+    lualine_x = {'searchcount'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
 
 --------------------------------------------
 -- Notifications
