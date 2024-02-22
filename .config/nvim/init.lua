@@ -93,8 +93,7 @@ vim.keymap.set("v", "<leader>`", "<esc>`<i`<esc>`>i`<esc>")
 --use jk to exit insert mode
 vim.keymap.set("i", "jk", "<esc>")
 --create mappings to edit the vimrc easily
-vim.keymap.set("n", "<leader>ev", ":split $MYVIMRC<cr>")
-vim.keymap.set("n", "<leader>sv", ":source $MYVIMRC<cr>")
+vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<cr>")
 
 -- terminal config
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
