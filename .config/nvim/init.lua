@@ -243,7 +243,7 @@ require('lualine').setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'diff', {'diagnostics', symbols = { error = " ", warn = " ", hint = " ", info = " " }}},
-    lualine_c = {'filename'},
+    lualine_c = {{'filename', path = 1}},
     lualine_x = {'searchcount'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
