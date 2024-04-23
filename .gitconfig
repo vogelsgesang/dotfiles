@@ -10,6 +10,7 @@
 [rebase]
 	autosquash = true
 [alias]
+	all = !git add -u && git commit --amend --no-edit -u
 	amend = commit --amend --no-edit -u
 	reword = commit --amend --only
 	reset-other = "!f() { git show -s refs/heads/$1 -- && git update-ref refs/heads/$1 $2 && git show -s $1; }; f"
