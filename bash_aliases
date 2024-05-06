@@ -2,13 +2,13 @@ alias ..="cd .."
 alias sudo=/usr/bin/sudo
 
 function sed-cpp {
-   find -iname \*.cpp -exec sed -i "$1" {} \;
-   find -iname \*.hpp -exec sed -i "$1" {} \;
+   find . -iname \*.cpp -exec sed -i "$1" {} \;
+   find . -iname \*.hpp -exec sed -i "$1" {} \;
 }
 
 function sed-test {
-   find -iname \*.test -exec sed -i "$1" {} \;
-   find -iname \*.loadtest -exec sed -i "$1" {} \;
+   find . -iname \*.test -exec sed -i "$1" {} \;
+   find . -iname \*.loadtest -exec sed -i "$1" {} \;
 }
 
 function sed-rename {
