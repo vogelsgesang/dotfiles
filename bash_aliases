@@ -25,3 +25,43 @@ function sed-rename {
     echo "usage: $0 sed_pattern files..."
   fi
 }
+
+function cpp-move-file {
+   local from=$1
+   local to=$2
+   echo move $from "->" $to
+   mkdir -p -- "${to%/*}"
+   mv "$from" "$to"
+   if [[ "$to" == *.cpp ]]; then
+      sed -i "/.* const char tc\[\] =/c\static const char tc[] = \"${to%.cpp}\";" "$to"
+   fi
+   if [[ "$from" == *.hpp ]]; then
+      sed-cpp "s|#include \"$1\"|#include \"$2\"|"
+   fi
+}
+
+
+function move-folder {
+   local from=$1
+   local to=$2
+   for entry in $(ls "$from"); do
+      path="$from/$entry"
+      if [ -f "$path" ]; then
+        move-file "$path" "$to/$entry"
+      elif [ -d "$path" ]; then
+         move-folder "$path" "$to/$entry"
+      else
+         echo "unsupported file type \"$path\""
+      fi
+   done
+}
+
+function move-hpp-cpp {
+   move-file "$1.hpp" "$2.hpp"
+   if [ -f "$1.cpp" ]; then
+      move-file "$1.cpp" "$2.cpp"
+   fi
+   if [ -f "$1.proxy.hpp" ]; then
+      move-file "$1.proxy.hpp" "$2.proxy.hpp"
+   fi
+}
