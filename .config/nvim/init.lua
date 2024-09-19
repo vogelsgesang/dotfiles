@@ -357,7 +357,9 @@ vim.keymap.set('n', '<space>q', telescope_builtin.diagnostics)
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local client = vim.lsp.get_clients({
+        id = ev.data.client_id
+    })[1]
     if client == nil then
       return
     end
