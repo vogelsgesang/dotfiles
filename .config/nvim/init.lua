@@ -439,6 +439,21 @@ nvim_lsp["clangd"].setup({
   }
 })
 
+-----------------------
+-- bazelrc language server
+
+local mason_registry = require("mason-registry")
+mason_registry.refresh(vim.schedule_wrap(function()
+   local pkg = mason_registry.get_package("bazelrc-lsp")
+   pkg:install()
+end))
+
+nvim_lsp["bazelrc_lsp"].setup({})
+vim.filetype.add {
+  pattern = {
+    ['.*.bazelrc'] = 'bazelrc',
+  },
+}
 
 -----------------------
 -- Lua language server for editing Neovim config
