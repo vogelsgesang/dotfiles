@@ -390,8 +390,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Trigger highlighting of symbol under cursor by keeping the cursor still
     if client.server_capabilities.documentHighlightProvider then
-      vim.api.nvim_create_autocmd('CursorHold', { callback = vim.lsp.buf.document_highlight})
-      vim.api.nvim_create_autocmd('CursorHoldI', { callback = vim.lsp.buf.document_highlight})
+      vim.keymap.set('n', '<leader>?', vim.lsp.buf.document_highlight)
       vim.api.nvim_create_autocmd('CursorMoved', { callback = vim.lsp.buf.clear_references})
     end
 
