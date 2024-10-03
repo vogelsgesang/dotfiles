@@ -57,11 +57,11 @@ function move-folder {
 }
 
 function move-hpp-cpp {
-   move-file "$1.hpp" "$2.hpp"
+   cpp-move-file "$1.hpp" "$2.hpp"
    if [ -f "$1.cpp" ]; then
-      move-file "$1.cpp" "$2.cpp"
+      cpp-move-file "$1.cpp" "$2.cpp"
    fi
    if [ -f "$1.proxy.hpp" ]; then
-      move-file "$1.proxy.hpp" "$2.proxy.hpp"
+      cpp-move-file "$1.proxy.hpp" "$2.proxy.hpp"
    fi
 }
