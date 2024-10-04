@@ -332,7 +332,7 @@ require('treesitter-context').setup{
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "clangd" },
+  ensure_installed = { "lua_ls", "clangd", "jsonls" },
 })
 local nvim_lsp = require('lspconfig')
 
@@ -409,6 +409,11 @@ vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 -- Symbols outline
 require("symbols-outline").setup()
 vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
+
+-----------------------
+-- Setup jsonls
+
+nvim_lsp["jsonls"].setup({})
 
 -----------------------
 -- Setup clangd
