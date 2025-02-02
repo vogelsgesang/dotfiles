@@ -120,7 +120,7 @@ vim.opt.rtp:prepend(lazypath)
 --------------------------
 
 require("lazy").setup({
--- Themes & general rendering
+  -- Themes & general rendering
   'sjl/badwolf', -- badwolf theme
   'tomasr/molokai', -- molokai theme
   {'kyazdani42/nvim-web-devicons', config = function () require('nvim-web-devicons').setup() end }, -- icons in Telescope
@@ -133,6 +133,7 @@ require("lazy").setup({
   'godlygeek/tabular', -- text aligning; http://media.vimcasts.org/videos/29/alignment.ogv
   { 'karb94/neoscroll.nvim', config = function () require('neoscroll').setup() end }, -- smooth scrolling
   { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' } }, -- status bar
+  'ntpeters/vim-better-whitespace',
    -- version control
   'rhysd/git-messenger.vim', -- reveal git log on current line
   'tpope/vim-fugitive', -- all vim commands Gdiff, Gblame, ...
