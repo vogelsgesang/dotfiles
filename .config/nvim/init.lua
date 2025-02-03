@@ -292,6 +292,8 @@ require('nvim-treesitter.configs').setup({
        "c", "cpp", "rust", "proto",
         -- Web development
        "typescript", "css", "html", "sql",
+       -- Java ecosystem
+       "java", "scala",
        -- Scripting
        "python", "bash",
        -- Build systems
