@@ -345,7 +345,7 @@ require('treesitter-context').setup{
 -- LSP support
 --------------------------------------------
 
-require("mason").setup()
+require("mason").setup({})
 require("mason-lspconfig").setup({
   ensure_installed = { "lua_ls", "clangd", "jsonls" },
 })
@@ -451,11 +451,15 @@ nvim_lsp["clangd"].setup({
   filetypes = {'c', 'cpp', 'objc', 'objcpp', 'cuda'},
   -- to debug: '-log:verbose'
   -- more features: `--hidden-features`
-  cmd = { clangd_path, '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions'},
+  cmd = { clangd_path, '--enable-config', '--limit-references=10000', '--limit-results=10000', '--parse-forwarding-functions', '--hidden-features'},
   flags = {
     debounce_text_changes = 300,
   }
 })
+
+-----------------------
+-- Rust language server
+nvim_lsp["rust_analyzer"].setup({})
 
 -----------------------
 -- bazelrc language server
