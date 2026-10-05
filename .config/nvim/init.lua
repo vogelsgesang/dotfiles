@@ -157,7 +157,7 @@ require("lazy").setup({
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
   'stevearc/dressing.nvim', -- nicer UI for code actions; unfortunately typrhas rendering errors
-  'simrat39/symbols-outline.nvim', -- symbol outline of current file
+  'hedyhli/outline.nvim', -- symbol outline of current file
   'mfussenegger/nvim-dap', --  Debug adapter
 });
 
@@ -336,7 +336,7 @@ require('treesitter-context').setup{
   min_window_height = 6, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
   line_numbers = true,
   multiline_threshold = 1, -- Maximum number of lines to show for a single context
-  trim_scope = 'inner', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
   mode = 'topline',  -- Line used to calculate context. Choices: 'cursor', 'topline'
 }
 
@@ -422,8 +422,8 @@ vim.api.nvim_set_hl(0, 'LspReferenceRead', { bg = '#5555aa', default = true })
 vim.api.nvim_set_hl(0, 'LspReferenceWrite', { bg = '#5555aa', default = true })
 
 -- Symbols outline
-require("symbols-outline").setup()
-vim.keymap.set('n', '<leader>s', "<cmd>SymbolsOutline<cr>")
+require("outline").setup({})
+vim.keymap.set('n', '<leader>s', "<cmd>Outline<cr>")
 
 -----------------------
 -- Setup jsonls
