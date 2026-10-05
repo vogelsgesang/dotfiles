@@ -140,7 +140,12 @@ require("lazy").setup({
   {'lewis6991/gitsigns.nvim', config = function () require('gitsigns').setup() end } , -- gutter, highlighting uncommitted changes
 
    -- languages/syntax highlighting
-  {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'}, -- Treesitter
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+  }, -- Treesitter
   'nvim-treesitter/nvim-treesitter-context',
    -- Language server support
   'williamboman/mason.nvim', -- Installation of LSP servers
@@ -286,35 +291,42 @@ vim.keymap.set('n', '<leader>n', require('telescope').extensions.notify.notify)
 -- Treesitter
 --------------------------------------------
 
-require('nvim-treesitter.configs').setup({
-    ensure_installed = {
-       -- System programming
-       "c", "cpp", "rust", "proto",
-        -- Web development
-       "typescript", "css", "html", "sql",
-       -- Java ecosystem
-       "java", "scala",
-       -- Scripting
-       "python", "bash",
-       -- Build systems
-       "cmake", "starlark",
-       -- Neovim itself
-       "lua", "vimdoc",
-       -- Text editing
-       "markdown", "rst", "latex",
-       -- File format
-       "json", "yaml"},
-    sync_install = false,
-    auto_install = false,
-    highlight = {
-        enable = true,
-    },
+local treesitter_languages = {
+  -- System programming
+  'c', 'cpp', 'rust', 'proto',
+  -- Web development
+  'typescript', 'css', 'html', 'sql',
+  -- Java ecosystem
+  'java', 'scala',
+  -- Scripting
+  'python', 'bash',
+  -- Build systems
+  'cmake', 'starlark',
+  -- Neovim itself
+  'lua', 'vimdoc',
+  -- Text editing
+  'markdown', 'rst', 'latex',
+  -- File formats
+  'json', 'yaml',
+}
+
+local treesitter = require('nvim-treesitter')
+treesitter.setup({})
+if treesitter.install then
+  treesitter.install(treesitter_languages)
+end
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function(args)
+    pcall(vim.treesitter.start, args.buf)
+  end,
 })
 
 -- Use treesitter for code folding
-vim.opt.foldlevelstart=999
-vim.opt.foldmethod="expr"
-vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
+vim.opt.foldlevelstart = 999
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 
 -- Use treesitter to display context
